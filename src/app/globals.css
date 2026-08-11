@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/*
+  Prabuddha — "Oxblood and champagne"
+  The logo's maroon becomes the surface itself; gold is the only accent.
+  Dark-only by design: champagne reads as metal on oxblood and as beige
+  on anything light.
+*/
+
+@theme {
+  --font-display: "Fraunces", "Noto Serif Sinhala", ui-serif, Georgia, serif;
+  --font-body: "Inter", "Noto Sans Sinhala", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-ink: #1c0f0e;
+  --color-shell: #2a1614;
+  --color-shell-high: #34201c;
+  --color-oxblood: #6e2b26;
+  --color-oxblood-bright: #8f3a33;
+  --color-champagne: #e0c892;
+  --color-gold: #c9a227;
+  --color-gold-deep: #3e2a1e;
+  --color-bone: #f5ede6;
+  --color-clay: #a98a80;
+  --color-alert: #d97066;
+
+  --radius-pill: 999px;
+  --radius-card: 20px;
+  --radius-sheet: 28px;
+  --radius-thumb: 12px;
+}
+
+:root {
+  --background: var(--color-ink);
+  --surface: var(--color-shell);
+  --surface-high: var(--color-shell-high);
+  --foreground: var(--color-bone);
+  --muted: var(--color-clay);
+  --border: #6e2b264d;
+  --border-soft: #6e2b2633;
+  --accent: var(--color-champagne);
+  --accent-contrast: #241804;
+  --accent-soft: var(--color-gold-deep);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-high: var(--surface-high);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+  }
+
+  /*
+    Sinhala stacks vowel signs above and below the baseline, so it needs
+    noticeably more room than Latin or the glyphs collide.
+  */
+  :lang(si) {
+    line-height: 1.9;
+  }
+
+  :lang(si) h1,
+  :lang(si) h2,
+  :lang(si) h3 {
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+}
+
+@utility eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* The tagline device from the logo: letterspaced caps between hairlines. */
+@utility rule-label {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.rule-label::before,
+.rule-label::after {
+  content: "";
+  height: 1px;
+  width: 1.5rem;
+  flex-shrink: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-champagne),
+    transparent
+  );
+}
+
+@utility card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+}
+
+/* Sinhala has no letter case, so uppercasing it is meaningless. */
+:lang(si) .eyebrow,
+:lang(si) .rule-label {
+  text-transform: none;
+  letter-spacing: 0.06em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

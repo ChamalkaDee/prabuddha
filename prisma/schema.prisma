@@ -1,0 +1,198 @@
+// Prabuddha — peer-to-peer community library
+// Prisma 7 schema. Generated client lands in src/generated/prisma.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+// Prisma 7: connection URLs live in prisma.config.ts (for migrations) and in
+// the driver adapter (for the running app), never in this file.
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Directory: roles + whitelist + payment status
+// ---------------------------------------------------------------------------
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MEMBER
+}
+
+/// PENDING  — on the directory, cannot borrow yet (not paid)
+/// ACTIVE   — paid and approved, borrowing enabled
+/// REVOKED  — access withdrawn
+enum MemberStatus {
+  PENDING
+  ACTIVE
+  REVOKED
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String       @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role         @default(MEMBER)
+  status        MemberStatus @default(PENDING)
+
+  /// Set when an admin marks the member as paid. Null means unpaid.
+  paidAt       DateTime?
+  /// Admin who last changed this member's status.
+  approvedById String?
+  /// Free-text admin note (e.g. "paid cash 12 Aug, shop").
+  notes        String?
+  /// Preferred language for the interface and for emails.
+  locale       String       @default("si")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  loans    Loan[]
+
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// Auth.js tables
+// ---------------------------------------------------------------------------
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ---------------------------------------------------------------------------
+// Catalogue
+// ---------------------------------------------------------------------------
+
+model Book {
+  id       String  @id @default(cuid())
+  /// Human-readable shelf mark shown on the spine, e.g. "PR-014".
+  shelfMark String @unique
+  /// Author name as printed on the book — not translated.
+  author    String
+  pageCount Int?
+  /// The language the physical book is actually written in.
+  language  String? @default("si")
+
+  /// Hidden books never appear in the public catalogue.
+  visible Boolean @default(true)
+
+  // Admin toggles for which metadata renders on the public listing
+  showDescription Boolean @default(true)
+  showPageCount   Boolean @default(true)
+  showAuthorBio   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images       BookImage[]
+  loans        Loan[]
+  translations BookTranslation[]
+
+  @@index([visible])
+}
+
+/// One row per language per book. The admin fills in whichever they can;
+/// lookup falls back through the locale chain when one is missing.
+model BookTranslation {
+  id     String @id @default(cuid())
+  bookId String
+  /// "si", "en" or "it"
+  locale String
+
+  title       String
+  description String?
+  authorBio   String?
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, locale])
+  @@index([bookId])
+}
+
+model BookImage {
+  id       String @id @default(cuid())
+  bookId   String
+  url      String
+  position Int    @default(0)
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([bookId])
+}
+
+// ---------------------------------------------------------------------------
+// Physical loans
+// ---------------------------------------------------------------------------
+
+enum LoanStatus {
+  ACTIVE
+  RETURNED
+}
+
+model Loan {
+  id     String     @id @default(cuid())
+  bookId String
+  userId String
+  status LoanStatus @default(ACTIVE)
+
+  startedAt DateTime  @default(now())
+  dueAt     DateTime
+  returnedAt DateTime?
+
+  /// 0 or 1 — the rules allow a single 7-day extension.
+  extensionCount Int       @default(0)
+  extendedAt     DateTime?
+
+  /// Stops the reminder cron sending twice.
+  reminderSentAt DateTime?
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([bookId, status])
+  @@index([status, dueAt])
+}
