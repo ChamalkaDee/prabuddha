@@ -128,7 +128,16 @@
     "optional": "Facoltativo",
     "showOnListing": "Mostra nella scheda pubblica",
     "visible": "Visibile nel catalogo pubblico",
-    "save": "Salva nel catalogo"
+    "save": "Salva nel catalogo",
+    "choosePhotos": "Scegli le foto",
+    "addAnotherPhoto": "Aggiungi un'altra foto",
+    "preparingImages": "Preparazione…",
+    "removeImage": "Rimuovi immagine",
+    "coverImage": "Copertina",
+    "photoHint": "Fino a {max} foto. Scattale col telefono o scegli dalla galleria — vengono ridimensionate automaticamente. La prima diventa la copertina.",
+    "uploadFailed": "Impossibile leggere l'immagine. Provane un'altra.",
+    "orPasteUrls": "Oppure incolla gli URL delle immagini",
+    "photos": "Foto"
   },
   "email": {
     "confirmSubject": "Prenotato: {title}",

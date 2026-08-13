@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { createBook } from "@/actions/books";
 import { Input, Textarea, Label, Checkbox } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
+import { ImageUpload } from "@/components/image-upload";
 import { locales, localeNames, type Locale } from "@/i18n/routing";
 
 export default async function NewBookPage({
@@ -82,17 +83,26 @@ export default async function NewBookPage({
         </div>
 
         <fieldset className="card p-5">
-          <legend className="eyebrow px-1">{t("images")}</legend>
-          <div className="mt-3 space-y-3">
-            {[0, 1, 2, 3].map((i) => (
-              <Input
-                key={i}
-                name="imageUrl"
-                type="url"
-                placeholder={i === 0 ? t("frontCover") : t("optional")}
-              />
-            ))}
+          <legend className="eyebrow px-1">{t("photos")}</legend>
+          <div className="mt-4">
+            <ImageUpload />
           </div>
+
+          <details className="mt-5">
+            <summary className="cursor-pointer text-[11px] text-muted">
+              {t("orPasteUrls")}
+            </summary>
+            <div className="mt-3 space-y-3">
+              {[0, 1].map((i) => (
+                <Input
+                  key={i}
+                  name="imageUrl"
+                  type="url"
+                  placeholder={i === 0 ? t("frontCover") : t("optional")}
+                />
+              ))}
+            </div>
+          </details>
         </fieldset>
 
         <fieldset className="card p-5">

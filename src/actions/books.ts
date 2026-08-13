@@ -6,6 +6,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/access";
 import { locales } from "@/i18n/routing";
+import { uploadBookCover } from "@/lib/storage";
 
 function str(formData: FormData, key: string) {
   const v = formData.get(key);
@@ -39,6 +40,31 @@ export async function createBook(formData: FormData) {
 
   const pageCountRaw = str(formData, "pageCount");
 
+  // Uploaded photos first, then any pasted URLs, capped at four in total.
+  const uploads = formData
+    .getAll("images")
+    .filter((v): v is File => v instanceof File && v.size > 0)
+    .slice(0, 4);
+
+  const uploadedUrls: string[] = [];
+  for (const [index, file] of uploads.entries()) {
+    try {
+      uploadedUrls.push(await uploadBookCover(file, shelfMark, index));
+    } catch (cause) {
+      const message = cause instanceof Error ? cause.message : "Upload failed";
+      redirect(
+        `/${locale}/admin/inventory/new?error=${encodeURIComponent(message)}`,
+      );
+    }
+  }
+
+  const pastedUrls = formData
+    .getAll("imageUrl")
+    .map((v) => String(v).trim())
+    .filter(Boolean);
+
+  const imageUrls = [...uploadedUrls, ...pastedUrls].slice(0, 4);
+
   await prisma.book.create({
     data: {
       shelfMark,
@@ -51,12 +77,7 @@ export async function createBook(formData: FormData) {
       visible: formData.get("visible") === "on",
       translations: { create: translations },
       images: {
-        create: formData
-          .getAll("imageUrl")
-          .map((v) => String(v).trim())
-          .filter(Boolean)
-          .slice(0, 4)
-          .map((url, position) => ({ url, position })),
+        create: imageUrls.map((url, position) => ({ url, position })),
       },
     },
   });

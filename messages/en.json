@@ -128,7 +128,16 @@
     "optional": "Optional",
     "showOnListing": "Show on the public listing",
     "visible": "Visible in the public catalogue",
-    "save": "Save to catalogue"
+    "save": "Save to catalogue",
+    "choosePhotos": "Choose photos",
+    "addAnotherPhoto": "Add another photo",
+    "preparingImages": "Preparing…",
+    "removeImage": "Remove image",
+    "coverImage": "Cover",
+    "photoHint": "Up to {max} photos. Take them with your phone or pick from your library — they are resized automatically. The first is used as the cover.",
+    "uploadFailed": "That image could not be read. Try another.",
+    "orPasteUrls": "Or paste image URLs instead",
+    "photos": "Photos"
   },
   "email": {
     "confirmSubject": "Reserved: {title}",
