@@ -1,19 +1,46 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/access";
 import { locales } from "@/i18n/routing";
-import { uploadBookCover } from "@/lib/storage";
+import { StorageNotConfiguredError, uploadBookCover } from "@/lib/storage";
+import { Prisma } from "@/generated/prisma/client";
 
 function str(formData: FormData, key: string) {
   const v = formData.get(key);
   return typeof v === "string" && v.trim() ? v.trim() : null;
 }
 
-export async function createBook(formData: FormData) {
+export type CreateBookResult =
+  | { ok: true; redirectTo: string }
+  | { ok: false; message: string; field?: string };
+
+/** Total request budget; matches serverActions.bodySizeLimit in next.config. */
+const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
+
+/** Postgres/pooler failures where the right advice is "wait and retry". */
+function isConnectionError(cause: unknown) {
+  if (cause instanceof Prisma.PrismaClientInitializationError) return true;
+  const code =
+    cause instanceof Prisma.PrismaClientKnownRequestError ? cause.code : null;
+  if (code && ["P1001", "P1002", "P1008", "P1017", "P2024"].includes(code)) {
+    return true;
+  }
+  const message = cause instanceof Error ? cause.message : String(cause);
+  return /ECONNRESET|ECONNREFUSED|ETIMEDOUT|timed? ?out|terminat|too many (clients|connections)/i.test(
+    message,
+  );
+}
+
+/**
+ * Returns a result rather than throwing or redirecting on failure, so the
+ * form can show a specific message and keep everything the admin typed.
+ * An uncaught error here is what produced the bare "This page couldn't
+ * load" screen on phones.
+ */
+export async function createBook(formData: FormData): Promise<CreateBookResult> {
   await requireAdmin();
   const [e, locale] = await Promise.all([getTranslations("errors"), getLocale()]);
 
@@ -30,15 +57,31 @@ export async function createBook(formData: FormData) {
     }))
     .filter((tr): tr is typeof tr & { title: string } => Boolean(tr.title));
 
-  if (!shelfMark || !author || translations.length === 0) {
-    redirect(
-      `/${locale}/admin/inventory/new?error=${encodeURIComponent(
-        e("required", { field: "Shelf mark, author, title" }),
-      )}`,
-    );
+  if (!shelfMark) return { ok: false, field: "shelfMark", message: e("missingShelfMark") };
+  if (!author) return { ok: false, field: "author", message: e("missingAuthor") };
+  if (translations.length === 0) {
+    return { ok: false, field: `title_${locale}`, message: e("missingTitle") };
   }
 
   const pageCountRaw = str(formData, "pageCount");
+  const pageCount = pageCountRaw ? Number(pageCountRaw) : null;
+  if (pageCount !== null && (!Number.isInteger(pageCount) || pageCount < 1)) {
+    return { ok: false, field: "pageCount", message: e("pageCountInvalid") };
+  }
+
+  // Checked before uploading so a clash does not leave orphaned photos.
+  try {
+    const clash = await prisma.book.findUnique({
+      where: { shelfMark },
+      select: { id: true },
+    });
+    if (clash) {
+      return { ok: false, field: "shelfMark", message: e("shelfMarkTaken", { mark: shelfMark }) };
+    }
+  } catch (cause) {
+    console.error("createBook: shelf mark lookup failed", cause);
+    return { ok: false, message: e("databaseUnavailable") };
+  }
 
   // Uploaded photos first, then any pasted URLs, capped at four in total.
   const uploads = formData
@@ -46,44 +89,70 @@ export async function createBook(formData: FormData) {
     .filter((v): v is File => v instanceof File && v.size > 0)
     .slice(0, 4);
 
-  const uploadedUrls: string[] = [];
-  for (const [index, file] of uploads.entries()) {
-    try {
-      uploadedUrls.push(await uploadBookCover(file, shelfMark, index));
-    } catch (cause) {
-      const message = cause instanceof Error ? cause.message : "Upload failed";
-      redirect(
-        `/${locale}/admin/inventory/new?error=${encodeURIComponent(message)}`,
-      );
+  const totalBytes = uploads.reduce((sum, file) => sum + file.size, 0);
+  if (totalBytes > MAX_TOTAL_BYTES) {
+    return {
+      ok: false,
+      message: e("photosTooLarge", { size: (totalBytes / 1024 / 1024).toFixed(1) }),
+    };
+  }
+
+  let uploadedUrls: string[];
+  try {
+    // In parallel: on a phone connection each upload is a separate wait.
+    uploadedUrls = await Promise.all(
+      uploads.map((file, index) => uploadBookCover(file, shelfMark, index)),
+    );
+  } catch (cause) {
+    console.error("createBook: photo upload failed", cause);
+    if (cause instanceof StorageNotConfiguredError) {
+      return { ok: false, message: e("storageNotConfigured") };
     }
+    const reason = cause instanceof Error ? cause.message : String(cause);
+    return { ok: false, message: e("photoUploadFailed", { reason }) };
   }
 
   const pastedUrls = formData
     .getAll("imageUrl")
     .map((v) => String(v).trim())
-    .filter(Boolean);
+    .filter((url) => /^https?:\/\//i.test(url));
 
   const imageUrls = [...uploadedUrls, ...pastedUrls].slice(0, 4);
 
-  await prisma.book.create({
-    data: {
-      shelfMark,
-      author,
-      pageCount: pageCountRaw ? Number(pageCountRaw) : null,
-      language: str(formData, "language") ?? "si",
-      showDescription: formData.get("showDescription") === "on",
-      showPageCount: formData.get("showPageCount") === "on",
-      showAuthorBio: formData.get("showAuthorBio") === "on",
-      visible: formData.get("visible") === "on",
-      translations: { create: translations },
-      images: {
-        create: imageUrls.map((url, position) => ({ url, position })),
+  try {
+    await prisma.book.create({
+      data: {
+        shelfMark,
+        author,
+        pageCount,
+        language: str(formData, "language") ?? "si",
+        showDescription: formData.get("showDescription") === "on",
+        showPageCount: formData.get("showPageCount") === "on",
+        showAuthorBio: formData.get("showAuthorBio") === "on",
+        visible: formData.get("visible") === "on",
+        translations: { create: translations },
+        images: {
+          create: imageUrls.map((url, position) => ({ url, position })),
+        },
       },
-    },
-  });
+    });
+  } catch (cause) {
+    if (
+      cause instanceof Prisma.PrismaClientKnownRequestError &&
+      cause.code === "P2002"
+    ) {
+      return { ok: false, field: "shelfMark", message: e("shelfMarkTaken", { mark: shelfMark }) };
+    }
+    const reference = crypto.randomUUID().slice(0, 8);
+    console.error(`createBook: save failed [ref ${reference}]`, cause);
+    if (isConnectionError(cause)) {
+      return { ok: false, message: e("databaseUnavailable") };
+    }
+    return { ok: false, message: e("saveFailed", { reference }) };
+  }
 
   revalidatePath("/", "layout");
-  redirect(`/${locale}/admin/inventory`);
+  return { ok: true, redirectTo: `/${locale}/admin/inventory` };
 }
 
 export async function toggleVisibility(bookId: string) {

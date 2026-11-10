@@ -1,46 +1,53 @@
 @import "tailwindcss";
 
 /*
-  Prabuddha — "Oxblood and champagne"
-  The logo's maroon becomes the surface itself; gold is the only accent.
-  Dark-only by design: champagne reads as metal on oxblood and as beige
-  on anything light.
+  Prabuddha — "Cream and oxblood"
+  A warm paper ground, deep oxblood ink and gold hairlines: the logo's
+  colours set on a printed page rather than a dark screen.
+
+  Sinhala text puts the Sinhala faces first (see :lang(si) and .brand-name
+  below). With Fraunces first, its Latin subset also covers the zero-width
+  joiner inside ප්‍ර, which split the cluster so ප්‍රබුද්ධ read as බුද්ධ
+  ("Buddha") on iPhone and iPad. Latin text keeps Latin-first stacks,
+  because the Sinhala subset also covers the space and widens it.
 */
 
 @theme {
-  --font-display: "Fraunces", "Noto Serif Sinhala", ui-serif, Georgia, serif;
-  --font-body: "Inter", "Noto Sans Sinhala", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: var(--font-fraunces), var(--font-noto-serif-sinhala), ui-serif, Georgia, serif;
+  --font-body: var(--font-inter), var(--font-noto-sans-sinhala), ui-sans-serif, system-ui, sans-serif;
+  --font-display-si: var(--font-noto-serif-sinhala), var(--font-fraunces), ui-serif, serif;
+  --font-body-si: var(--font-noto-sans-sinhala), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
 
-  --color-ink: #1c0f0e;
-  --color-shell: #2a1614;
-  --color-shell-high: #34201c;
+  --color-cream: #f6f0e4;
+  --color-paper: #fbf8f1;
+  --color-paper-deep: #f0e8d8;
+  --color-ink: #2b1714;
   --color-oxblood: #6e2b26;
   --color-oxblood-bright: #8f3a33;
-  --color-champagne: #e0c892;
-  --color-gold: #c9a227;
-  --color-gold-deep: #3e2a1e;
-  --color-bone: #f5ede6;
-  --color-clay: #a98a80;
-  --color-alert: #d97066;
+  --color-gold: #b08d3c;
+  --color-champagne-tint: #efe3c8;
+  --color-clay: #7a645c;
+  --color-alert: #b3392f;
 
   --radius-pill: 999px;
-  --radius-card: 20px;
-  --radius-sheet: 28px;
-  --radius-thumb: 12px;
+  --radius-card: 18px;
+  --radius-sheet: 24px;
+  --radius-thumb: 10px;
 }
 
 :root {
-  --background: var(--color-ink);
-  --surface: var(--color-shell);
-  --surface-high: var(--color-shell-high);
-  --foreground: var(--color-bone);
+  --background: var(--color-cream);
+  --surface: var(--color-paper);
+  --surface-high: var(--color-paper-deep);
+  --foreground: var(--color-ink);
   --muted: var(--color-clay);
-  --border: #6e2b264d;
-  --border-soft: #6e2b2633;
-  --accent: var(--color-champagne);
-  --accent-contrast: #241804;
-  --accent-soft: var(--color-gold-deep);
+  /* Hairlines: one pixel of warm brown at low opacity, never a heavy rule. */
+  --border: #6e2b2629;
+  --border-soft: #6e2b261f;
+  --accent: var(--color-oxblood);
+  --accent-contrast: var(--color-paper);
+  --accent-soft: var(--color-champagne-tint);
 }
 
 @theme inline {
@@ -62,7 +69,7 @@
 
   html {
     -webkit-text-size-adjust: 100%;
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
@@ -87,11 +94,18 @@
   */
   :lang(si) {
     line-height: 1.9;
+    font-family: var(--font-body-si);
+  }
+
+  :lang(si) .font-display,
+  .brand-name {
+    font-family: var(--font-display-si);
   }
 
   :lang(si) h1,
   :lang(si) h2,
   :lang(si) h3 {
+    font-family: var(--font-display-si);
     line-height: 1.5;
     letter-spacing: 0;
   }
@@ -135,14 +149,14 @@
   background: linear-gradient(
     to right,
     transparent,
-    var(--color-champagne),
+    var(--color-gold),
     transparent
   );
 }
 
 @utility card {
   background: var(--surface);
-  border: 1px solid var(--border-soft);
+  border: 1px solid var(--border);
   border-radius: var(--radius-card);
 }
 

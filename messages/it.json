@@ -137,7 +137,10 @@
     "photoHint": "Fino a {max} foto. Scattale col telefono o scegli dalla galleria — vengono ridimensionate automaticamente. La prima diventa la copertina.",
     "uploadFailed": "Impossibile leggere l'immagine. Provane un'altra.",
     "orPasteUrls": "Oppure incolla gli URL delle immagini",
-    "photos": "Foto"
+    "photos": "Foto",
+    "tooManyPhotos": "Si possono aggiungere al massimo {max} foto. Quelle in più sono state escluse.",
+    "saving": "Salvataggio…",
+    "savingWithPhotos": "Salvataggio e caricamento di {count, plural, =1 {1 foto} other {# foto}}…"
   },
   "email": {
     "confirmSubject": "Prenotato: {title}",
@@ -166,6 +169,25 @@
     "adminLimit": "Limite raggiunto — massimo {max} co-amministratori.",
     "superAdminProtected": "I super amministratori non si modificano da qui.",
     "returnBooksFirst": "Registra la restituzione dei loro libri prima di revocare l'accesso.",
-    "required": "{field} è obbligatorio."
+    "required": "{field} è obbligatorio.",
+    "missingShelfMark": "Inserisci una segnatura, per esempio PR-014.",
+    "missingAuthor": "Inserisci il nome dell'autore.",
+    "missingTitle": "Inserisci un titolo in almeno una lingua.",
+    "pageCountInvalid": "Il numero di pagine deve essere un numero intero, come 240.",
+    "shelfMarkTaken": "La segnatura {mark} è già usata da un altro libro. Scegline un'altra.",
+    "databaseUnavailable": "Il database della biblioteca non ha risposto in tempo. Non è stato salvato nulla e i tuoi dati sono ancora qui. Attendi qualche secondo e premi di nuovo Salva.",
+    "photosTooLarge": "Le foto pesano in tutto {size} MB, troppo per un solo invio. Rimuovine una o due e premi di nuovo Salva.",
+    "storageNotConfigured": "L'archivio delle foto non è configurato sul server, quindi il libro non è stato salvato. Rimuovi le foto per salvarlo senza, e avvisa il gestore del sito.",
+    "photoUploadFailed": "Non è stato possibile archiviare una foto ({reason}). Il libro non è stato salvato. Premi di nuovo Salva, oppure rimuovi quella foto.",
+    "saveFailed": "Il libro non è stato salvato per un problema imprevisto del server. Premi di nuovo Salva. Se succede ancora, invia al gestore del sito questo codice: {reference}.",
+    "photosStillPreparing": "Le foto sono ancora in preparazione. Attendi un momento, poi premi Salva.",
+    "connectionLost": "Impossibile raggiungere il server. Controlla il Wi-Fi o la rete mobile, poi premi di nuovo Salva. I tuoi dati sono ancora qui."
+  },
+  "errorPage": {
+    "title": "Qualcosa è andato storto in questa pagina",
+    "body": "Il server non è riuscito a completare la richiesta. Di solito è temporaneo: riprova tra qualche secondo.",
+    "retry": "Riprova",
+    "home": "Torna allo scaffale",
+    "reference": "Riferimento: {digest}"
   }
 }

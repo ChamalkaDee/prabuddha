@@ -137,7 +137,10 @@
     "photoHint": "Up to {max} photos. Take them with your phone or pick from your library — they are resized automatically. The first is used as the cover.",
     "uploadFailed": "That image could not be read. Try another.",
     "orPasteUrls": "Or paste image URLs instead",
-    "photos": "Photos"
+    "photos": "Photos",
+    "tooManyPhotos": "Only {max} photos fit. The extra ones were left out.",
+    "saving": "Saving…",
+    "savingWithPhotos": "Saving and uploading {count, plural, =1 {1 photo} other {# photos}}…"
   },
   "email": {
     "confirmSubject": "Reserved: {title}",
@@ -166,6 +169,25 @@
     "adminLimit": "Limit reached — {max} co-admins maximum.",
     "superAdminProtected": "Super admins cannot be changed here.",
     "returnBooksFirst": "Check their books back in before revoking access.",
-    "required": "{field} is required."
+    "required": "{field} is required.",
+    "missingShelfMark": "Enter a shelf mark, for example PR-014.",
+    "missingAuthor": "Enter the author's name.",
+    "missingTitle": "Enter a title in at least one language.",
+    "pageCountInvalid": "Page count must be a whole number, like 240.",
+    "shelfMarkTaken": "Shelf mark {mark} is already used by another book. Choose a different one.",
+    "databaseUnavailable": "The library database did not respond in time. Nothing was saved and your entries are still here. Wait a few seconds and press Save again.",
+    "photosTooLarge": "The photos add up to {size} MB, which is too large to send in one go. Remove one or two and press Save again.",
+    "storageNotConfigured": "Photo storage is not set up on the server, so the book was not saved. Remove the photos to save without them, and tell the site owner.",
+    "photoUploadFailed": "A photo could not be stored ({reason}). The book was not saved. Press Save again, or remove that photo.",
+    "saveFailed": "The book could not be saved because of an unexpected server problem. Press Save again. If it keeps happening, send the site owner this code: {reference}.",
+    "photosStillPreparing": "Photos are still being prepared. Wait a moment, then press Save.",
+    "connectionLost": "Could not reach the server. Check the Wi-Fi or mobile signal, then press Save again. Your entries are still here."
+  },
+  "errorPage": {
+    "title": "Something went wrong on this page",
+    "body": "The server could not finish this request. This is usually brief: try again in a few seconds.",
+    "retry": "Try again",
+    "home": "Back to the shelf",
+    "reference": "Reference: {digest}"
   }
 }

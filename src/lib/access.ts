@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
 export type Viewer = {
   id: string;
@@ -12,8 +13,12 @@ export type Viewer = {
   locale: string | null;
 };
 
-/** Returns the signed-in member, or null for guests. Guests may browse. */
-export async function getViewer(): Promise<Viewer | null> {
+/**
+ * Returns the signed-in member, or null for guests. Guests may browse.
+ * Cached per request: the header, bottom nav and page all ask for the
+ * viewer, and without this each one cost two more database round trips.
+ */
+export const getViewer = cache(async (): Promise<Viewer | null> => {
   const session = await auth();
   if (!session?.user?.id) return null;
   const user = await prisma.user.findUnique({
@@ -29,7 +34,7 @@ export async function getViewer(): Promise<Viewer | null> {
     },
   });
   return user as Viewer | null;
-}
+});
 
 export function isAdmin(viewer: Viewer | null) {
   return viewer?.role === "ADMIN" || viewer?.role === "SUPER_ADMIN";

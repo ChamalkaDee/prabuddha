@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const base =
-  "min-h-12 w-full rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-accent";
+  "min-h-12 w-full rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-muted/60 transition-colors focus:border-accent aria-[invalid=true]:border-alert";
 
 export function Input({
   className,
@@ -57,7 +57,7 @@ export function Checkbox({
   return (
     <input
       type="checkbox"
-      className={cn("h-5 w-5 shrink-0 accent-[#e0c892]", className)}
+      className={cn("h-5 w-5 shrink-0 accent-[#6e2b26]", className)}
       {...props}
     />
   );

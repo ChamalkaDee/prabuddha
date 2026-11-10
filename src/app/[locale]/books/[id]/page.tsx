@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { canBorrow, getViewer } from "@/lib/access";
 import { Badge } from "@/components/ui/field";
 import { BorrowButton } from "@/components/borrow-button";
+import { BookCover } from "@/components/book-cover";
 import { MAX_ACTIVE_LOANS } from "@/lib/loans";
 import { pickTranslation } from "@/lib/book-i18n";
 import type { Locale } from "@/i18n/routing";
@@ -76,16 +77,12 @@ export default async function BookPage({
       </Link>
 
       <div className="mt-4 flex justify-center">
-        {book.images[0] ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={book.images[0].url}
-            alt=""
-            className="h-56 w-40 rounded-2xl border border-border object-cover"
-          />
-        ) : (
-          <div className="h-56 w-40 rounded-2xl bg-surface-high" />
-        )}
+        <BookCover
+          url={book.images[0]?.url ?? null}
+          sizes="176px"
+          priority
+          className="w-44"
+        />
       </div>
 
       <section className="mt-7 rounded-t-[28px] border border-border bg-surface p-6 pb-10">

@@ -15,7 +15,7 @@ export async function SiteHeader() {
         <Link href="/" className="flex items-center gap-2.5">
           <LogoMark size={32} />
           <span className="flex flex-col leading-none">
-            <span className="font-display text-base text-foreground">
+            <span className="brand-name text-base text-foreground">
               {brand("name")}
             </span>
             <span className="mt-0.5 text-[9px] tracking-[0.22em] text-accent uppercase">

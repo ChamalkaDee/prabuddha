@@ -1,6 +1,5 @@
-import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { Badge } from "@/components/ui/field";
+import { BookCover } from "@/components/book-cover";
 
 export type CardBook = {
   id: string;
@@ -11,52 +10,35 @@ export type CardBook = {
   available: boolean;
 };
 
-export async function BookCard({ book }: { book: CardBook }) {
-  const t = await getTranslations("book");
-
+/** Cover on top, title and author underneath; the whole card opens the book. */
+export function BookCard({
+  book,
+  priority,
+  onLoanLabel,
+}: {
+  book: CardBook;
+  priority?: boolean;
+  onLoanLabel: string;
+}) {
   return (
-    <Link
-      href={`/books/${book.id}`}
-      className="card flex items-center gap-4 p-4 transition-colors hover:border-accent/40"
-    >
-      {book.cover ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={book.cover}
-          alt=""
-          loading="lazy"
-          className="h-[70px] w-[50px] shrink-0 rounded-xl object-cover"
+    <Link href={`/books/${book.id}`} className="group block">
+      <div className="relative">
+        <BookCover
+          url={book.cover}
+          sizes="(min-width: 640px) 220px, 46vw"
+          priority={priority}
+          className="transition-transform duration-200 group-active:scale-[0.98]"
         />
-      ) : (
-        <div className="h-[70px] w-[50px] shrink-0 rounded-xl bg-surface-high" />
-      )}
-
-      <div className="min-w-0 flex-1">
-        <p className="font-display text-[15px] leading-snug text-foreground">
-          {book.title}
-        </p>
-        <p className="mt-1 truncate text-xs text-muted">{book.author}</p>
-        <Badge tone={book.available ? "available" : "onloan"} className="mt-2.5">
-          {book.available ? t("onShelf") : t("onLoan")}
-        </Badge>
+        {!book.available && (
+          <span className="absolute top-2 left-2 rounded-full border border-border bg-surface/90 px-2.5 py-1 text-[10px] leading-none text-muted backdrop-blur">
+            {onLoanLabel}
+          </span>
+        )}
       </div>
-
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        className="shrink-0 text-muted"
-      >
-        <path
-          d="m9 6 6 6-6 6"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <p className="mt-3 line-clamp-2 font-display text-[15px] leading-snug text-foreground group-hover:text-accent">
+        {book.title}
+      </p>
+      <p className="mt-1 truncate text-xs text-muted">{book.author}</p>
     </Link>
   );
 }

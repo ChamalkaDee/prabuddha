@@ -1,4 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import {
+  Fraunces,
+  Inter,
+  JetBrains_Mono,
+  Noto_Sans_Sinhala,
+  Noto_Serif_Sinhala,
+} from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
@@ -13,6 +20,50 @@ export const metadata: Metadata = {
     "A members' lending library. Browse the shelf freely; borrow in person at the shop.",
   icons: { icon: "/icon-192.png", apple: "/icon-1024.png" },
 };
+
+export const viewport: Viewport = {
+  themeColor: "#f6f0e4",
+};
+
+// Self-hosted by next/font: no render-blocking request to Google on every
+// page, and the files are served from the same CDN as the app.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+  preload: false,
+});
+const sinhalaSans = Noto_Sans_Sinhala({
+  subsets: ["sinhala"],
+  weight: ["400", "500", "600"],
+  variable: "--font-noto-sans-sinhala",
+  display: "swap",
+});
+const sinhalaSerif = Noto_Serif_Sinhala({
+  subsets: ["sinhala"],
+  weight: ["400", "600"],
+  variable: "--font-noto-serif-sinhala",
+  display: "swap",
+});
+
+const fontVariables = [
+  fraunces.variable,
+  inter.variable,
+  mono.variable,
+  sinhalaSans.variable,
+  sinhalaSerif.variable,
+].join(" ");
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -30,15 +81,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} dir="ltr">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Sinhala:wght@400;500;600&family=Noto+Serif+Sinhala:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang={locale} dir="ltr" className={fontVariables}>
       <body className="min-h-dvh pb-28">
         <NextIntlClientProvider>
           <SiteHeader />

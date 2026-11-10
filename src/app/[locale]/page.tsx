@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import { BookCard } from "@/components/book-card";
 import { Input } from "@/components/ui/field";
+import { Link } from "@/i18n/navigation";
 import { pickTranslation } from "@/lib/book-i18n";
 import type { Locale } from "@/i18n/routing";
 
@@ -18,7 +19,10 @@ export default async function CataloguePage({
   const locale = rawLocale as Locale;
   setRequestLocale(locale);
   const { q = "", show } = await searchParams;
-  const t = await getTranslations("catalogue");
+  const [t, b] = await Promise.all([
+    getTranslations("catalogue"),
+    getTranslations("book"),
+  ]);
 
   const books = await prisma.book.findMany({
     where: {
@@ -72,8 +76,8 @@ export default async function CataloguePage({
       <form className="mt-7">
         <Input name="q" defaultValue={q} placeholder={t("search")} />
         <div className="mt-3 flex gap-2">
-          <a
-            href="./"
+          <Link
+            href={q ? { pathname: "/", query: { q } } : "/"}
             className={
               show === "available"
                 ? "rounded-full border border-border px-5 py-2.5 text-xs text-muted"
@@ -81,9 +85,9 @@ export default async function CataloguePage({
             }
           >
             {t("filterAll")}
-          </a>
-          <a
-            href="?show=available"
+          </Link>
+          <Link
+            href={{ pathname: "/", query: { ...(q ? { q } : {}), show: "available" } }}
             className={
               show === "available"
                 ? "rounded-full bg-accent px-5 py-2.5 text-xs font-medium text-accent-contrast"
@@ -91,7 +95,7 @@ export default async function CataloguePage({
             }
           >
             {t("filterAvailable")}
-          </a>
+          </Link>
         </div>
       </form>
 
@@ -103,9 +107,14 @@ export default async function CataloguePage({
           </p>
         </div>
       ) : (
-        <div className="mt-7 grid gap-3 sm:grid-cols-2">
-          {visible.map((book) => (
-            <BookCard key={book.id} book={book} />
+        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6">
+          {visible.map((book, index) => (
+            <BookCard
+              key={book.id}
+              book={book}
+              priority={index < 4}
+              onLoanLabel={b("onLoan")}
+            />
           ))}
         </div>
       )}

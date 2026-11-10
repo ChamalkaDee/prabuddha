@@ -35,7 +35,7 @@ export async function BottomNav() {
           </Link>
         ))}
         <div className="sm:hidden">
-          <LanguageSwitcher />
+          <LanguageSwitcher compact />
         </div>
       </div>
     </nav>
