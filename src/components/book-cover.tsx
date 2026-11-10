@@ -19,7 +19,7 @@ function canOptimise(url: string) {
 }
 
 /**
- * A 2:3 book cover. Known hosts go through next/image, which serves a
+ * A book cover, square in the shelf grid and 2:3 on the book page. Known hosts go through next/image, which serves a
  * phone-sized WebP instead of the 1400px original. Pasted URLs from any
  * other site fall back to a plain <img>, because next/image throws for
  * hosts it was not configured for.
@@ -28,9 +28,11 @@ export function BookCover({
   url,
   sizes,
   priority,
+  shape = "portrait",
   className,
 }: {
   url: string | null;
+  shape?: "square" | "portrait";
   sizes: string;
   priority?: boolean;
   className?: string;
@@ -38,7 +40,8 @@ export function BookCover({
   return (
     <div
       className={cn(
-        "relative aspect-[2/3] overflow-hidden rounded-[10px] border border-border bg-surface-high",
+        shape === "square" ? "aspect-square" : "aspect-[2/3]",
+        "relative overflow-hidden rounded-[10px] border border-border bg-surface-high",
         className,
       )}
     >

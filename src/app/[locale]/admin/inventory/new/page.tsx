@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { NewBookForm } from "@/components/new-book-form";
+import { BookForm } from "@/components/book-form";
 import type { Locale } from "@/i18n/routing";
 
 export default async function NewBookPage({
@@ -18,7 +18,7 @@ export default async function NewBookPage({
         ← {t("tabInventory")}
       </Link>
       <h2 className="mt-3 font-display text-2xl font-semibold">{t("addBook")}</h2>
-      <NewBookForm />
+      <BookForm />
     </div>
   );
 }

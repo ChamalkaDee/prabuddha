@@ -72,10 +72,15 @@ export type Picked = { file: File; preview: string };
  * <input> are never sent.
  */
 export function ImageUpload({
+  existing = [],
+  onRemoveExisting,
   picked,
   onChange,
   onBusyChange,
 }: {
+  /** Photos already saved on the book (edit mode), shown before new ones. */
+  existing?: string[];
+  onRemoveExisting?: (url: string) => void;
   picked: Picked[];
   onChange: (next: Picked[]) => void;
   onBusyChange: (busy: boolean) => void;
@@ -95,7 +100,7 @@ export function ImageUpload({
     onBusyChange(true);
     setError(null);
 
-    const room = MAX_IMAGES - picked.length;
+    const room = MAX_IMAGES - existing.length - picked.length;
     const results = await Promise.allSettled(chosen.slice(0, room).map(shrink));
     const ready = results
       .filter((r): r is PromiseFulfilledResult<File> => r.status === "fulfilled")
@@ -125,19 +130,30 @@ export function ImageUpload({
         onChange={onPick}
       />
 
-      {picked.length > 0 && (
+      {existing.length + picked.length > 0 && (
         <ul className="flex flex-wrap gap-3">
-          {picked.map((item, index) => (
-            <li key={item.preview} className="relative">
+          {[
+            ...existing.map((url) => ({
+              key: url,
+              src: url,
+              onRemove: () => onRemoveExisting?.(url),
+            })),
+            ...picked.map((item, index) => ({
+              key: item.preview,
+              src: item.preview,
+              onRemove: () => remove(index),
+            })),
+          ].map((item, index) => (
+            <li key={item.key} className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={item.preview}
+                src={item.src}
                 alt=""
                 className="h-24 w-[68px] rounded-[10px] border border-border object-cover"
               />
               <button
                 type="button"
-                onClick={() => remove(index)}
+                onClick={item.onRemove}
                 aria-label={t("removeImage")}
                 className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full border border-border bg-surface text-muted transition-colors hover:text-foreground"
               >
@@ -161,7 +177,7 @@ export function ImageUpload({
         </ul>
       )}
 
-      {picked.length < MAX_IMAGES && (
+      {existing.length + picked.length < MAX_IMAGES && (
         <button
           type="button"
           disabled={busy}
@@ -181,7 +197,9 @@ export function ImageUpload({
                   strokeLinecap="round"
                 />
               </svg>
-              {picked.length === 0 ? t("choosePhotos") : t("addAnotherPhoto")}
+              {existing.length + picked.length === 0
+                ? t("choosePhotos")
+                : t("addAnotherPhoto")}
             </>
           )}
         </button>

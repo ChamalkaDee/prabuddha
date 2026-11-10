@@ -6,6 +6,7 @@ import { setPaidStatus, setRole, revokeMember } from "@/actions/members";
 import { markReturned } from "@/actions/loans";
 import { toggleVisibility, deleteBook } from "@/actions/books";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 
 function useAction() {
   const [pending, start] = useTransition();
@@ -108,7 +109,10 @@ export function BookRowActions({
   const t = useTranslations("admin");
   const [pending, start] = useTransition();
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2">
+      <Link href={`/admin/inventory/${bookId}/edit`}>
+        <Button>{t("edit")}</Button>
+      </Link>
       <Button
         variant="outline"
         disabled={pending}

@@ -140,7 +140,10 @@
     "photos": "ඡායාරූප",
     "tooManyPhotos": "ඡායාරූප {max} ක් පමණක් එක් කළ හැක. අමතර ඒවා ඉවත් කරන ලදී.",
     "saving": "සුරකිමින්…",
-    "savingWithPhotos": "සුරකිමින්, ඡායාරූප {count} ක් උඩුගත කරමින්…"
+    "savingWithPhotos": "සුරකිමින්, ඡායාරූප {count} ක් උඩුගත කරමින්…",
+    "edit": "සංස්කරණය",
+    "editBook": "පොත සංස්කරණය",
+    "saveChanges": "වෙනස්කම් සුරකින්න"
   },
   "email": {
     "confirmSubject": "වෙන් කරන ලදී: {title}",

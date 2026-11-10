@@ -82,7 +82,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir="ltr" className={fontVariables}>
-      <body className="min-h-dvh pb-28">
+      <body className="min-h-dvh pb-32">
         <NextIntlClientProvider>
           <SiteHeader />
           <main className="mx-auto w-full max-w-3xl px-5 sm:px-8">

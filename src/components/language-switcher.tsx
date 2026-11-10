@@ -25,8 +25,8 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
           aria-current={code === locale ? "true" : undefined}
           className={
             code === locale
-              ? "rounded-full bg-accent-soft px-2.5 py-1.5 text-[11px] text-accent"
-              : "rounded-full px-2.5 py-1.5 text-[11px] text-muted transition-colors hover:text-foreground"
+              ? "rounded-full bg-accent-soft px-3 py-2 text-[13px] text-accent"
+              : "rounded-full px-3 py-2 text-[13px] text-muted transition-colors hover:text-foreground"
           }
         >
           {compact ? shortNames[code] : localeNames[code]}

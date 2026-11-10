@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
-import { canBorrow, getViewer } from "@/lib/access";
+import { canBorrow, getViewer, isAdmin } from "@/lib/access";
 import { Badge } from "@/components/ui/field";
 import { BorrowButton } from "@/components/borrow-button";
 import { BookCover } from "@/components/book-cover";
@@ -20,8 +20,9 @@ export default async function BookPage({
   const { id, locale: rawLocale } = await params;
   const locale = rawLocale as Locale;
   setRequestLocale(locale);
-  const [t, format] = await Promise.all([
+  const [t, a, format] = await Promise.all([
     getTranslations("book"),
+    getTranslations("admin"),
     getFormatter(),
   ]);
 
@@ -44,7 +45,9 @@ export default async function BookPage({
   const available = !activeLoan;
 
   const activeCount = viewer
-    ? await prisma.loan.count({ where: { userId: viewer.id, status: "ACTIVE" } })
+    ? await prisma.loan.count({
+        where: { userId: viewer.id, status: "ACTIVE" },
+      })
     : 0;
 
   let blocked: string | undefined;
@@ -59,22 +62,32 @@ export default async function BookPage({
 
   return (
     <div className="pt-6">
-      <Link
-        href="/"
-        className="inline-flex min-h-11 items-center gap-2 text-xs text-muted transition-colors hover:text-accent"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="m15 6-6 6 6 6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        {t("back")}
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <Link
+          href="/"
+          className="inline-flex min-h-11 items-center gap-2 text-xs text-muted transition-colors hover:text-accent"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="m15 6-6 6 6 6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          {t("back")}
+        </Link>
+        {isAdmin(viewer) && (
+          <Link
+            href={`/admin/inventory/${book.id}/edit`}
+            className="inline-flex min-h-11 items-center rounded-full border border-border px-5 text-xs text-accent transition-colors hover:bg-accent-soft"
+          >
+            {a("edit")}
+          </Link>
+        )}
+      </div>
 
       <div className="mt-4 flex justify-center">
         <BookCover
@@ -111,18 +124,12 @@ export default async function BookPage({
         {book.showAuthorBio && text?.authorBio ? (
           <div className="mt-6 border-t border-border pt-5">
             <p className="eyebrow">{t("aboutAuthor")}</p>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              {text.authorBio}
-            </p>
+            <p className="mt-3 text-sm leading-relaxed text-muted">{text.authorBio}</p>
           </div>
         ) : null}
 
         <div className="mt-8">
-          <BorrowButton
-            bookId={book.id}
-            disabled={Boolean(blocked)}
-            reason={blocked}
-          />
+          <BorrowButton bookId={book.id} disabled={Boolean(blocked)} reason={blocked} />
           <p className="mt-4 text-center text-[11px] leading-relaxed text-muted">
             {t("terms")}
           </p>

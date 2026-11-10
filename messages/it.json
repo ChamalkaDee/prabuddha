@@ -140,7 +140,10 @@
     "photos": "Foto",
     "tooManyPhotos": "Si possono aggiungere al massimo {max} foto. Quelle in più sono state escluse.",
     "saving": "Salvataggio…",
-    "savingWithPhotos": "Salvataggio e caricamento di {count, plural, =1 {1 foto} other {# foto}}…"
+    "savingWithPhotos": "Salvataggio e caricamento di {count, plural, =1 {1 foto} other {# foto}}…",
+    "edit": "Modifica",
+    "editBook": "Modifica libro",
+    "saveChanges": "Salva modifiche"
   },
   "email": {
     "confirmSubject": "Prenotato: {title}",

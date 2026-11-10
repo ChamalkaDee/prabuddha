@@ -140,7 +140,10 @@
     "photos": "Photos",
     "tooManyPhotos": "Only {max} photos fit. The extra ones were left out.",
     "saving": "Saving…",
-    "savingWithPhotos": "Saving and uploading {count, plural, =1 {1 photo} other {# photos}}…"
+    "savingWithPhotos": "Saving and uploading {count, plural, =1 {1 photo} other {# photos}}…",
+    "edit": "Edit",
+    "editBook": "Edit book",
+    "saveChanges": "Save changes"
   },
   "email": {
     "confirmSubject": "Reserved: {title}",

@@ -41,8 +41,24 @@ function isConnectionError(cause: unknown) {
  * load" screen on phones.
  */
 export async function createBook(formData: FormData): Promise<CreateBookResult> {
+  return saveBook(null, formData);
+}
+
+/** Same form and rules as createBook, applied to an existing book. */
+export async function updateBook(
+  bookId: string,
+  formData: FormData,
+): Promise<CreateBookResult> {
+  return saveBook(bookId, formData);
+}
+
+async function saveBook(
+  bookId: string | null,
+  formData: FormData,
+): Promise<CreateBookResult> {
   await requireAdmin();
   const [e, locale] = await Promise.all([getTranslations("errors"), getLocale()]);
+  const action = bookId ? "updateBook" : "createBook";
 
   const shelfMark = str(formData, "shelfMark");
   const author = str(formData, "author");
@@ -71,23 +87,36 @@ export async function createBook(formData: FormData): Promise<CreateBookResult> 
 
   // Checked before uploading so a clash does not leave orphaned photos.
   try {
+    if (bookId) {
+      const existing = await prisma.book.findUnique({
+        where: { id: bookId },
+        select: { id: true },
+      });
+      if (!existing) return { ok: false, message: e("bookNotFound") };
+    }
     const clash = await prisma.book.findUnique({
       where: { shelfMark },
       select: { id: true },
     });
-    if (clash) {
+    if (clash && clash.id !== bookId) {
       return { ok: false, field: "shelfMark", message: e("shelfMarkTaken", { mark: shelfMark }) };
     }
   } catch (cause) {
-    console.error("createBook: shelf mark lookup failed", cause);
+    console.error(`${action}: lookup failed`, cause);
     return { ok: false, message: e("databaseUnavailable") };
   }
 
-  // Uploaded photos first, then any pasted URLs, capped at four in total.
+  // Photos already on the book that the admin kept, in their order.
+  const keptUrls = formData
+    .getAll("keepImage")
+    .map((v) => String(v).trim())
+    .filter((url) => /^https?:\/\//i.test(url));
+
+  // Then new uploads, then any pasted URLs, capped at four in total.
   const uploads = formData
     .getAll("images")
     .filter((v): v is File => v instanceof File && v.size > 0)
-    .slice(0, 4);
+    .slice(0, Math.max(0, 4 - keptUrls.length));
 
   const totalBytes = uploads.reduce((sum, file) => sum + file.size, 0);
   if (totalBytes > MAX_TOTAL_BYTES) {
@@ -104,7 +133,7 @@ export async function createBook(formData: FormData): Promise<CreateBookResult> 
       uploads.map((file, index) => uploadBookCover(file, shelfMark, index)),
     );
   } catch (cause) {
-    console.error("createBook: photo upload failed", cause);
+    console.error(`${action}: photo upload failed`, cause);
     if (cause instanceof StorageNotConfiguredError) {
       return { ok: false, message: e("storageNotConfigured") };
     }
@@ -117,25 +146,47 @@ export async function createBook(formData: FormData): Promise<CreateBookResult> 
     .map((v) => String(v).trim())
     .filter((url) => /^https?:\/\//i.test(url));
 
-  const imageUrls = [...uploadedUrls, ...pastedUrls].slice(0, 4);
+  const imageUrls = [...keptUrls, ...uploadedUrls, ...pastedUrls].slice(0, 4);
+  const images = imageUrls.map((url, position) => ({ url, position }));
+
+  const fields = {
+    shelfMark,
+    author,
+    pageCount,
+    showDescription: formData.get("showDescription") === "on",
+    showPageCount: formData.get("showPageCount") === "on",
+    showAuthorBio: formData.get("showAuthorBio") === "on",
+    visible: formData.get("visible") === "on",
+  };
 
   try {
-    await prisma.book.create({
-      data: {
-        shelfMark,
-        author,
-        pageCount,
-        language: str(formData, "language") ?? "si",
-        showDescription: formData.get("showDescription") === "on",
-        showPageCount: formData.get("showPageCount") === "on",
-        showAuthorBio: formData.get("showAuthorBio") === "on",
-        visible: formData.get("visible") === "on",
-        translations: { create: translations },
-        images: {
-          create: imageUrls.map((url, position) => ({ url, position })),
+    if (bookId) {
+      await prisma.book.update({
+        where: { id: bookId },
+        data: {
+          ...fields,
+          translations: {
+            // A language whose title was cleared is removed entirely.
+            deleteMany: { locale: { notIn: translations.map((tr) => tr.locale) } },
+            upsert: translations.map(({ locale: code, ...text }) => ({
+              where: { bookId_locale: { bookId, locale: code } },
+              create: { locale: code, ...text },
+              update: text,
+            })),
+          },
+          images: { deleteMany: {}, create: images },
         },
-      },
-    });
+      });
+    } else {
+      await prisma.book.create({
+        data: {
+          ...fields,
+          language: str(formData, "language") ?? "si",
+          translations: { create: translations },
+          images: { create: images },
+        },
+      });
+    }
   } catch (cause) {
     if (
       cause instanceof Prisma.PrismaClientKnownRequestError &&
@@ -144,7 +195,7 @@ export async function createBook(formData: FormData): Promise<CreateBookResult> 
       return { ok: false, field: "shelfMark", message: e("shelfMarkTaken", { mark: shelfMark }) };
     }
     const reference = crypto.randomUUID().slice(0, 8);
-    console.error(`createBook: save failed [ref ${reference}]`, cause);
+    console.error(`${action}: save failed [ref ${reference}]`, cause);
     if (isConnectionError(cause)) {
       return { ok: false, message: e("databaseUnavailable") };
     }

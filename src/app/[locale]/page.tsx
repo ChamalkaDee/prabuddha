@@ -107,12 +107,12 @@ export default async function CataloguePage({
           </p>
         </div>
       ) : (
-        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6">
+        <div className="mt-7 grid grid-cols-3 gap-x-3 gap-y-5 sm:grid-cols-4 sm:gap-x-5 sm:gap-y-7">
           {visible.map((book, index) => (
             <BookCard
               key={book.id}
               book={book}
-              priority={index < 4}
+              priority={index < 6}
               onLoanLabel={b("onLoan")}
             />
           ))}
