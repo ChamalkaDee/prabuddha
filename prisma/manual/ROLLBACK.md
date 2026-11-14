@@ -30,6 +30,7 @@ git push
 ## Bringing categories back later
 
 - After Option A: `git revert <the revert commit>` and push.
-- After Option B: run `2026-11-14_categories.sql` again first (it recreates
-  the categories and the suggested tags), then revert the revert and push.
+- After Option B: revert the revert (this restores the code and the SQL
+  file), run `2026-11-14_categories.sql` in Supabase (it recreates the
+  categories and the suggested tags), then push.
   Any tags you changed by hand after the first run are lost.
