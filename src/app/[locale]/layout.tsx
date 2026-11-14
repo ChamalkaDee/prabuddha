@@ -13,6 +13,7 @@ import "../globals.css";
 import { routing } from "@/i18n/routing";
 import { SiteHeader } from "@/components/site-header";
 import { BottomNav } from "@/components/bottom-nav";
+import { ShopStrip } from "@/components/shop-strip";
 
 export const metadata: Metadata = {
   title: "ප්‍රබුද්ධ Prabuddha Library",
@@ -85,6 +86,7 @@ export default async function LocaleLayout({
       <body className="min-h-dvh pb-32">
         <NextIntlClientProvider>
           <SiteHeader />
+          <ShopStrip />
           <main className="mx-auto w-full max-w-3xl px-5 sm:px-8">
             {children}
           </main>

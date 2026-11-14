@@ -221,5 +221,10 @@
     "retry": "Riprova",
     "home": "Torna allo scaffale",
     "reference": "Riferimento: {digest}"
+  },
+  "shop": {
+    "label": "Ritiro e restituzione dei libri",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Chiama o scrivi al {phone} su WhatsApp"
   }
 }

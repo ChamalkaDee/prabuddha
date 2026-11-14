@@ -221,5 +221,10 @@
     "retry": "Try again",
     "home": "Back to the shelf",
     "reference": "Reference: {digest}"
+  },
+  "shop": {
+    "label": "Collect & return books at",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "Call or message {phone} on WhatsApp"
   }
 }

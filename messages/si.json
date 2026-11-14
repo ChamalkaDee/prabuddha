@@ -221,5 +221,10 @@
     "retry": "නැවත උත්සාහ කරන්න",
     "home": "රාක්කයට ආපසු",
     "reference": "යොමු අංකය: {digest}"
+  },
+  "shop": {
+    "label": "පොත් ලබාගැනීම සහ ආපසු බාරදීම",
+    "whatsapp": "WhatsApp",
+    "whatsappLabel": "{phone} අංකයට WhatsApp මඟින් අමතන්න"
   }
 }
