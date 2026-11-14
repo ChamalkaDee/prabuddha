@@ -38,8 +38,9 @@ const pill =
   "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background/60 px-4 text-xs text-accent transition-colors hover:border-accent/50 hover:bg-accent-soft";
 
 /**
- * Where to collect and return books, under the header: the address as a
- * link to Google Maps, plus Maps and WhatsApp buttons.
+ * Where to collect and return books: one slim line under the header that
+ * opens to show the address (a Google Maps link) and the WhatsApp number.
+ * A native <details>, so it works without JavaScript.
  */
 export async function ShopStrip() {
   const t = await getTranslations("shop");
@@ -47,54 +48,64 @@ export async function ShopStrip() {
 
   return (
     <div className="border-b border-border/60 bg-surface">
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-        <a
-          href={SHOP.mapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex min-w-0 items-start gap-3"
-        >
-          <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
-            <MapPinIcon />
-          </span>
-          <span className="min-w-0">
-            <span className="eyebrow block">{t("label")}</span>
-            <span className="mt-1 block text-xs leading-relaxed text-foreground/85 transition-colors group-hover:text-accent">
-              <span className="font-display text-[13px] font-semibold text-foreground group-hover:text-accent">
-                {name}
-              </span>
-              <span aria-hidden="true" className="mx-1.5 text-gold">
-                ·
-              </span>
-              {rest.join(", ")}
-            </span>
-          </span>
-        </a>
+      <details className="group mx-auto w-full max-w-3xl px-5 sm:px-8">
+        <summary className="flex min-h-10 cursor-pointer list-none items-center gap-2 text-accent [&::-webkit-details-marker]:hidden">
+          <MapPinIcon size={14} />
+          <span className="eyebrow">{t("label")}</span>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="ml-auto text-muted transition-transform group-open:rotate-180"
+          >
+            <path
+              d="m6 9 6 6 6-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </summary>
 
-        <div className="flex gap-2 pl-11 sm:pl-0">
+        <div className="flex flex-col gap-3 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
           <a
             href={SHOP.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className={pill}
+            className="group/address min-w-0 text-xs leading-relaxed text-foreground/85 transition-colors hover:text-accent"
           >
-            <MapPinIcon size={14} />
-            {t("openMaps")}
-          </a>
-          <a
-            href={SHOP.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t("whatsappLabel", { phone: SHOP.phone })}
-            className={pill}
-          >
-            <span className="text-[#1f8f4e]">
-              <WhatsAppIcon size={15} />
+            <span className="font-display text-[13px] font-semibold text-foreground group-hover/address:text-accent">
+              {name}
             </span>
-            <span className="font-mono text-[11px]">{SHOP.phone}</span>
+            <span aria-hidden="true" className="mx-1.5 text-gold">
+              ·
+            </span>
+            {rest.join(", ")}
           </a>
+
+          <div className="flex gap-2">
+            <a href={SHOP.mapsUrl} target="_blank" rel="noopener noreferrer" className={pill}>
+              <MapPinIcon size={14} />
+              {t("openMaps")}
+            </a>
+            <a
+              href={SHOP.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("whatsappLabel", { phone: SHOP.phone })}
+              className={pill}
+            >
+              <span className="text-[#1f8f4e]">
+                <WhatsAppIcon size={15} />
+              </span>
+              <span className="font-mono text-[11px]">{SHOP.phone}</span>
+            </a>
+          </div>
         </div>
-      </div>
+      </details>
     </div>
   );
 }

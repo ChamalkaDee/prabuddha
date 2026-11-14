@@ -223,7 +223,7 @@
     "reference": "Reference: {digest}"
   },
   "shop": {
-    "label": "Collect & return books at",
+    "label": "Collect & return books",
     "whatsappLabel": "Call or message {phone} on WhatsApp",
     "openMaps": "Maps"
   }
