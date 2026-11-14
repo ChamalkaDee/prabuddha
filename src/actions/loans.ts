@@ -40,11 +40,17 @@ export async function borrowBook(bookId: string): Promise<ActionResult> {
     where: { id: bookId },
     include: {
       translations: true,
-      loans: { where: { status: "ACTIVE" }, take: 1 },
+      loans: { where: { status: "ACTIVE" }, select: { userId: true } },
     },
   });
   if (!book || !book.visible) return { ok: false, message: e("bookNotFound") };
-  if (book.loans.length > 0) return { ok: false, message: e("alreadyOnLoan") };
+  if (book.loans.some((loan) => loan.userId === viewer.id)) {
+    return { ok: false, message: e("alreadyHaveCopy") };
+  }
+  // A title stays borrowable until every copy is out.
+  if (book.loans.length >= Math.max(1, book.copies)) {
+    return { ok: false, message: e("alreadyOnLoan") };
+  }
 
   const dueAt = dueDateFrom();
   await prisma.loan.create({ data: { bookId, userId: viewer.id, dueAt } });

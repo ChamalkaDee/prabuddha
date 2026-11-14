@@ -124,6 +124,16 @@ model Book {
   showPageCount   Boolean @default(true)
   showAuthorBio   Boolean @default(false)
 
+  /// How many physical copies the library holds. A title stays on the
+  /// shelf until every copy is out on loan.
+  copies Int @default(1)
+  /// Pinned books sit at the top of the shelf, ahead of newer arrivals.
+  pinned Boolean @default(false)
+  /// Optional highlighted ribbon over the cover, e.g. "Free for anyone".
+  bannerText  String?
+  /// One of the preset colours in src/lib/banner.ts.
+  bannerColor String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -132,6 +142,7 @@ model Book {
   translations BookTranslation[]
 
   @@index([visible])
+  @@index([pinned])
 }
 
 /// One row per language per book. The admin fills in whichever they can;

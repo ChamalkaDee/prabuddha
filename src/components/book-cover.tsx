@@ -19,7 +19,10 @@ function canOptimise(url: string) {
 }
 
 /**
- * A book cover, square in the shelf grid and 2:3 on the book page. Known hosts go through next/image, which serves a
+ * A book cover, square in the shelf grid and 2:3 on the book page. In the
+ * square the whole cover is shown (contain, not crop) over a blurred copy
+ * of itself, so portrait covers keep their edges without grey bars. The
+ * backdrop uses the same src and sizes, so it costs no extra download. Known hosts go through next/image, which serves a
  * phone-sized WebP instead of the 1400px original. Pasted URLs from any
  * other site fall back to a plain <img>, because next/image throws for
  * hosts it was not configured for.
@@ -30,13 +33,16 @@ export function BookCover({
   priority,
   shape = "portrait",
   className,
+  children,
 }: {
   url: string | null;
   shape?: "square" | "portrait";
   sizes: string;
   priority?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }) {
+  const fit = shape === "square" ? "object-contain" : "object-cover";
   return (
     <div
       className={cn(
@@ -53,26 +59,41 @@ export function BookCover({
           className="absolute inset-0 m-auto w-1/3 opacity-25"
         />
       )}
-      {url &&
-        (canOptimise(url) ? (
-          <Image
-            src={url}
-            alt=""
-            fill
-            sizes={sizes}
-            priority={priority}
-            className="object-cover"
-          />
-        ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={url}
-            alt=""
-            loading={priority ? "eager" : "lazy"}
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        ))}
+      {url && shape === "square" && (
+        <CoverImage
+          url={url}
+          sizes={sizes}
+          priority={priority}
+          className="scale-110 object-cover opacity-60 blur-md"
+        />
+      )}
+      {url && <CoverImage url={url} sizes={sizes} priority={priority} className={fit} />}
+      {children}
     </div>
+  );
+}
+
+function CoverImage({
+  url,
+  sizes,
+  priority,
+  className,
+}: {
+  url: string;
+  sizes: string;
+  priority?: boolean;
+  className: string;
+}) {
+  return canOptimise(url) ? (
+    <Image src={url} alt="" fill sizes={sizes} priority={priority} className={className} />
+  ) : (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={url}
+      alt=""
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      className={cn("absolute inset-0 h-full w-full", className)}
+    />
   );
 }

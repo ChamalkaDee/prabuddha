@@ -46,19 +46,29 @@ export default async function CataloguePage({
     include: {
       translations: true,
       images: { orderBy: { position: "asc" }, take: 1 },
-      loans: { where: { status: "ACTIVE" }, take: 1 },
+      _count: { select: { loans: { where: { status: "ACTIVE" } } } },
     },
-    orderBy: { createdAt: "desc" },
+    // Pinned books first, then newest arrivals.
+    orderBy: [{ pinned: "desc" }, { createdAt: "desc" }],
   });
 
-  const shaped = books.map((b) => ({
-    id: b.id,
-    shelfMark: b.shelfMark,
-    title: pickTranslation(b.translations, locale).value?.title ?? b.shelfMark,
-    author: b.author,
-    cover: b.images[0]?.url ?? null,
-    available: b.loans.length === 0,
-  }));
+  const shaped = books.map((b) => {
+    const copies = Math.max(1, b.copies);
+    const copiesFree = Math.max(0, copies - b._count.loans);
+    return {
+      id: b.id,
+      shelfMark: b.shelfMark,
+      title: pickTranslation(b.translations, locale).value?.title ?? b.shelfMark,
+      author: b.author,
+      cover: b.images[0]?.url ?? null,
+      available: copiesFree > 0,
+      copiesFree,
+      copies,
+      pinned: b.pinned,
+      bannerText: b.bannerText,
+      bannerColor: b.bannerColor,
+    };
+  });
 
   const onShelf = shaped.filter((b) => b.available).length;
   const visible = show === "available" ? shaped.filter((b) => b.available) : shaped;
@@ -114,6 +124,8 @@ export default async function CataloguePage({
               book={book}
               priority={index < 6}
               onLoanLabel={b("onLoan")}
+              copiesLabel={b("copiesFree", { free: book.copiesFree, total: book.copies })}
+              pinnedLabel={b("pinned")}
             />
           ))}
         </div>

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { setPaidStatus, setRole, revokeMember } from "@/actions/members";
 import { markReturned } from "@/actions/loans";
-import { toggleVisibility, deleteBook } from "@/actions/books";
+import { toggleVisibility, togglePin, deleteBook } from "@/actions/books";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
@@ -100,10 +100,12 @@ export function ReturnButton({ loanId }: { loanId: string }) {
 export function BookRowActions({
   bookId,
   visible,
+  pinned,
   onLoan,
 }: {
   bookId: string;
   visible: boolean;
+  pinned: boolean;
   onLoan: boolean;
 }) {
   const t = useTranslations("admin");
@@ -119,6 +121,13 @@ export function BookRowActions({
         onClick={() => start(async () => void (await toggleVisibility(bookId)))}
       >
         {visible ? t("hide") : t("show")}
+      </Button>
+      <Button
+        variant="outline"
+        disabled={pending}
+        onClick={() => start(async () => void (await togglePin(bookId)))}
+      >
+        {pinned ? t("unpin") : t("pin")}
       </Button>
       <Button
         variant="danger"

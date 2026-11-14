@@ -38,7 +38,11 @@
     "notPaid": "Browsing is open to everyone. Borrowing unlocks once an admin marks your membership as paid.",
     "atLimit": "You have {max} books out already. Return one at the shop first.",
     "reserved": "Reserved. Collect it at the shop.",
-    "noTranslation": "Not yet available in this language."
+    "noTranslation": "Not yet available in this language.",
+    "copiesFree": "{free}/{total}",
+    "copiesOnShelf": "{free} of {total} copies on shelf",
+    "pinned": "Pinned",
+    "youHaveIt": "You already have a copy of this book."
   },
   "loans": {
     "title": "Your loans",
@@ -143,7 +147,17 @@
     "savingWithPhotos": "Saving and uploading {count, plural, =1 {1 photo} other {# photos}}…",
     "edit": "Edit",
     "editBook": "Edit book",
-    "saveChanges": "Save changes"
+    "saveChanges": "Save changes",
+    "copies": "Number of copies",
+    "copiesHint": "How many of this book the library holds. It stays on the shelf until every copy is out on loan.",
+    "shelfExtras": "Shelf extras",
+    "pinToTop": "Pin to the top of the shelf",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "bannerText": "Banner (optional)",
+    "bannerPlaceholder": "Free for anyone",
+    "bannerHint": "Shown as a highlighted ribbon across the cover. Leave empty for no banner.",
+    "bannerColor": "Banner colour"
   },
   "email": {
     "confirmSubject": "Reserved: {title}",
@@ -184,7 +198,9 @@
     "photoUploadFailed": "A photo could not be stored ({reason}). The book was not saved. Press Save again, or remove that photo.",
     "saveFailed": "The book could not be saved because of an unexpected server problem. Press Save again. If it keeps happening, send the site owner this code: {reference}.",
     "photosStillPreparing": "Photos are still being prepared. Wait a moment, then press Save.",
-    "connectionLost": "Could not reach the server. Check the Wi-Fi or mobile signal, then press Save again. Your entries are still here."
+    "connectionLost": "Could not reach the server. Check the Wi-Fi or mobile signal, then press Save again. Your entries are still here.",
+    "copiesInvalid": "Number of copies must be a whole number from 1 to 999.",
+    "alreadyHaveCopy": "You already have a copy of this book."
   },
   "errorPage": {
     "title": "Something went wrong on this page",

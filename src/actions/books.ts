@@ -7,6 +7,7 @@ import { requireAdmin } from "@/lib/access";
 import { locales } from "@/i18n/routing";
 import { StorageNotConfiguredError, uploadBookCover } from "@/lib/storage";
 import { Prisma } from "@/generated/prisma/client";
+import { BANNER_COLORS, BANNER_MAX_LENGTH, DEFAULT_BANNER_COLOR } from "@/lib/banner";
 
 function str(formData: FormData, key: string) {
   const v = formData.get(key);
@@ -85,6 +86,17 @@ async function saveBook(
     return { ok: false, field: "pageCount", message: e("pageCountInvalid") };
   }
 
+  const copiesRaw = str(formData, "copies");
+  const copies = copiesRaw ? Number(copiesRaw) : 1;
+  if (!Number.isInteger(copies) || copies < 1 || copies > 999) {
+    return { ok: false, field: "copies", message: e("copiesInvalid") };
+  }
+
+  const bannerText = str(formData, "bannerText")?.slice(0, BANNER_MAX_LENGTH) ?? null;
+  const bannerColorRaw = str(formData, "bannerColor");
+  const bannerColor =
+    bannerColorRaw && bannerColorRaw in BANNER_COLORS ? bannerColorRaw : DEFAULT_BANNER_COLOR;
+
   // Checked before uploading so a clash does not leave orphaned photos.
   try {
     if (bookId) {
@@ -157,6 +169,10 @@ async function saveBook(
     showPageCount: formData.get("showPageCount") === "on",
     showAuthorBio: formData.get("showAuthorBio") === "on",
     visible: formData.get("visible") === "on",
+    pinned: formData.get("pinned") === "on",
+    copies,
+    bannerText,
+    bannerColor: bannerText ? bannerColor : null,
   };
 
   try {
@@ -213,6 +229,20 @@ export async function toggleVisibility(bookId: string) {
   await prisma.book.update({
     where: { id: bookId },
     data: { visible: !book.visible },
+  });
+  revalidatePath("/", "layout");
+}
+
+export async function togglePin(bookId: string) {
+  await requireAdmin();
+  const book = await prisma.book.findUnique({
+    where: { id: bookId },
+    select: { pinned: true },
+  });
+  if (!book) return;
+  await prisma.book.update({
+    where: { id: bookId },
+    data: { pinned: !book.pinned },
   });
   revalidatePath("/", "layout");
 }

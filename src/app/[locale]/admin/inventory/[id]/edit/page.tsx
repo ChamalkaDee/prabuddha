@@ -36,6 +36,10 @@ export default async function EditBookPage({
     showPageCount: book.showPageCount,
     showAuthorBio: book.showAuthorBio,
     visible: book.visible,
+    pinned: book.pinned,
+    copies: book.copies,
+    bannerText: book.bannerText,
+    bannerColor: book.bannerColor,
     imageUrls: book.images.map((image) => image.url),
     translations: Object.fromEntries(
       book.translations

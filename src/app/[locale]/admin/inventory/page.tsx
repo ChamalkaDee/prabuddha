@@ -23,10 +23,10 @@ export default async function InventoryPage({
   ]);
 
   const books = await prisma.book.findMany({
-    orderBy: { createdAt: "desc" },
+    orderBy: [{ pinned: "desc" }, { createdAt: "desc" }],
     include: {
       translations: true,
-      loans: { where: { status: "ACTIVE" }, include: { user: true }, take: 1 },
+      loans: { where: { status: "ACTIVE" }, select: { id: true } },
       _count: { select: { loans: true } },
     },
   });
@@ -47,7 +47,10 @@ export default async function InventoryPage({
       ) : (
         <ul className="space-y-3">
           {books.map((book) => {
-            const onLoan = book.loans.length > 0;
+            const out = book.loans.length;
+            const copies = Math.max(1, book.copies);
+            const onLoan = out > 0;
+            const allOut = out >= copies;
             const have = book.translations.map((tr) => tr.locale);
             return (
               <li key={book.id} className="card p-5">
@@ -59,9 +62,14 @@ export default async function InventoryPage({
                 <p className="truncate text-xs text-muted">{book.author}</p>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
-                  <Badge tone={onLoan ? "onloan" : "available"}>
-                    {onLoan ? b("onLoan") : b("onShelf")}
+                  <Badge tone={allOut ? "onloan" : "available"}>
+                    {allOut ? b("onLoan") : b("onShelf")}
                   </Badge>
+                  {copies > 1 && (
+                    <Badge>{b("copiesOnShelf", { free: copies - Math.min(out, copies), total: copies })}</Badge>
+                  )}
+                  {book.pinned && <Badge tone="available">{b("pinned")}</Badge>}
+                  {book.bannerText && <Badge>“{book.bannerText}”</Badge>}
                   {!book.visible && <Badge>{t("hidden")}</Badge>}
                   <span className="font-mono text-[10px] text-muted">
                     {t("lentTimes", { count: book._count.loans })}
@@ -86,6 +94,7 @@ export default async function InventoryPage({
                   <BookRowActions
                     bookId={book.id}
                     visible={book.visible}
+                    pinned={book.pinned}
                     onLoan={onLoan}
                   />
                 </div>

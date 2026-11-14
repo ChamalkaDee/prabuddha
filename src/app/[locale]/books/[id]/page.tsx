@@ -6,6 +6,7 @@ import { canBorrow, getViewer, isAdmin } from "@/lib/access";
 import { Badge } from "@/components/ui/field";
 import { BorrowButton } from "@/components/borrow-button";
 import { BookCover } from "@/components/book-cover";
+import { BookBanner } from "@/components/book-banner";
 import { MAX_ACTIVE_LOANS } from "@/lib/loans";
 import { pickTranslation } from "@/lib/book-i18n";
 import type { Locale } from "@/i18n/routing";
@@ -32,7 +33,12 @@ export default async function BookPage({
       include: {
         translations: true,
         images: { orderBy: { position: "asc" } },
-        loans: { where: { status: "ACTIVE" }, take: 1 },
+        // Soonest back first: that date is the one to show when every copy is out.
+        loans: {
+          where: { status: "ACTIVE" },
+          orderBy: { dueAt: "asc" },
+          select: { dueAt: true, userId: true },
+        },
       },
     }),
     getViewer(),
@@ -41,8 +47,11 @@ export default async function BookPage({
   if (!book || !book.visible) notFound();
 
   const { value: text, isFallback } = pickTranslation(book.translations, locale);
-  const activeLoan = book.loans[0];
-  const available = !activeLoan;
+  const copies = Math.max(1, book.copies);
+  const copiesFree = Math.max(0, copies - book.loans.length);
+  const available = copiesFree > 0;
+  const nextBack = book.loans[0];
+  const viewerHasIt = Boolean(viewer && book.loans.some((loan) => loan.userId === viewer.id));
 
   const activeCount = viewer
     ? await prisma.loan.count({
@@ -51,9 +60,10 @@ export default async function BookPage({
     : 0;
 
   let blocked: string | undefined;
-  if (!available)
+  if (viewerHasIt) blocked = t("youHaveIt");
+  else if (!available)
     blocked = t("onLoanUntil", {
-      date: format.dateTime(activeLoan.dueAt, { dateStyle: "medium" }),
+      date: format.dateTime(nextBack.dueAt, { dateStyle: "medium" }),
     });
   else if (!viewer) blocked = t("signInToBorrow");
   else if (!canBorrow(viewer)) blocked = t("notPaid");
@@ -95,7 +105,11 @@ export default async function BookPage({
           sizes="176px"
           priority
           className="w-44"
-        />
+        >
+          {book.bannerText && (
+            <BookBanner text={book.bannerText} color={book.bannerColor} size="lg" />
+          )}
+        </BookCover>
       </div>
 
       <section className="mt-7 rounded-t-[28px] border border-border bg-surface p-6 pb-10">
@@ -109,6 +123,9 @@ export default async function BookPage({
           <Badge tone={available ? "available" : "onloan"}>
             {available ? t("onShelf") : t("onLoan")}
           </Badge>
+          {copies > 1 && (
+            <Badge>{t("copiesOnShelf", { free: copiesFree, total: copies })}</Badge>
+          )}
           {book.showPageCount && book.pageCount ? (
             <Badge>{t("pages", { count: book.pageCount })}</Badge>
           ) : null}

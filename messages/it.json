@@ -38,7 +38,11 @@
     "notPaid": "Sfogliare è aperto a tutti. Il prestito si attiva quando un amministratore segna la tua iscrizione come pagata.",
     "atLimit": "Hai già {max} libri in prestito. Restituiscine uno in negozio.",
     "reserved": "Prenotato. Ritiralo in negozio.",
-    "noTranslation": "Non ancora disponibile in questa lingua."
+    "noTranslation": "Non ancora disponibile in questa lingua.",
+    "copiesFree": "{free}/{total}",
+    "copiesOnShelf": "{free} copie su {total} disponibili",
+    "pinned": "In evidenza",
+    "youHaveIt": "Hai già una copia di questo libro."
   },
   "loans": {
     "title": "I tuoi prestiti",
@@ -143,7 +147,17 @@
     "savingWithPhotos": "Salvataggio e caricamento di {count, plural, =1 {1 foto} other {# foto}}…",
     "edit": "Modifica",
     "editBook": "Modifica libro",
-    "saveChanges": "Salva modifiche"
+    "saveChanges": "Salva modifiche",
+    "copies": "Numero di copie",
+    "copiesHint": "Quante copie di questo libro possiede la biblioteca. Resta disponibile finché tutte le copie non sono in prestito.",
+    "shelfExtras": "Opzioni scaffale",
+    "pinToTop": "Fissa in cima allo scaffale",
+    "pin": "Fissa",
+    "unpin": "Rimuovi",
+    "bannerText": "Banner (facoltativo)",
+    "bannerPlaceholder": "Gratis per tutti",
+    "bannerHint": "Appare come un nastro evidenziato sulla copertina. Lascia vuoto per nessun banner.",
+    "bannerColor": "Colore del banner"
   },
   "email": {
     "confirmSubject": "Prenotato: {title}",
@@ -184,7 +198,9 @@
     "photoUploadFailed": "Non è stato possibile archiviare una foto ({reason}). Il libro non è stato salvato. Premi di nuovo Salva, oppure rimuovi quella foto.",
     "saveFailed": "Il libro non è stato salvato per un problema imprevisto del server. Premi di nuovo Salva. Se succede ancora, invia al gestore del sito questo codice: {reference}.",
     "photosStillPreparing": "Le foto sono ancora in preparazione. Attendi un momento, poi premi Salva.",
-    "connectionLost": "Impossibile raggiungere il server. Controlla il Wi-Fi o la rete mobile, poi premi di nuovo Salva. I tuoi dati sono ancora qui."
+    "connectionLost": "Impossibile raggiungere il server. Controlla il Wi-Fi o la rete mobile, poi premi di nuovo Salva. I tuoi dati sono ancora qui.",
+    "copiesInvalid": "Il numero di copie deve essere un intero da 1 a 999.",
+    "alreadyHaveCopy": "Hai già una copia di questo libro."
   },
   "errorPage": {
     "title": "Qualcosa è andato storto in questa pagina",

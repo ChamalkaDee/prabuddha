@@ -8,6 +8,14 @@ import { Input, Textarea, Label, Checkbox } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { ImageUpload, type Picked } from "@/components/image-upload";
 import { locales, localeNames, type Locale } from "@/i18n/routing";
+import {
+  BANNER_COLORS,
+  BANNER_MAX_LENGTH,
+  DEFAULT_BANNER_COLOR,
+  bannerClass,
+  type BannerColor,
+} from "@/lib/banner";
+import { cn } from "@/lib/utils";
 
 type Failure = Extract<CreateBookResult, { ok: false }>;
 
@@ -21,6 +29,10 @@ export type BookFormValues = {
   showPageCount: boolean;
   showAuthorBio: boolean;
   visible: boolean;
+  pinned: boolean;
+  copies: number;
+  bannerText: string | null;
+  bannerColor: string | null;
   imageUrls: string[];
   translations: Partial<
     Record<Locale, { title: string; description: string | null; authorBio: string | null }>
@@ -44,6 +56,12 @@ export function BookForm({ book }: { book?: BookFormValues }) {
   const [preparing, setPreparing] = useState(false);
   const [pending, start] = useTransition();
   const [failure, setFailure] = useState<Failure | null>(null);
+  const [bannerText, setBannerText] = useState(book?.bannerText ?? "");
+  const [bannerColor, setBannerColor] = useState<BannerColor>(
+    book?.bannerColor && book.bannerColor in BANNER_COLORS
+      ? (book.bannerColor as BannerColor)
+      : DEFAULT_BANNER_COLOR,
+  );
   const errorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -129,6 +147,23 @@ export function BookForm({ book }: { book?: BookFormValues }) {
             aria-invalid={invalid("pageCount")}
           />
         </div>
+      </div>
+
+      <div>
+        <Label htmlFor="copies">{t("copies")}</Label>
+        <Input
+          id="copies"
+          name="copies"
+          type="number"
+          inputMode="numeric"
+          min="1"
+          max="999"
+          step="1"
+          required
+          defaultValue={book?.copies ?? 1}
+          aria-invalid={invalid("copies")}
+        />
+        <p className="mt-2 text-[11px] leading-relaxed text-muted">{t("copiesHint")}</p>
       </div>
 
       <div>
@@ -222,6 +257,68 @@ export function BookForm({ book }: { book?: BookFormValues }) {
           ))}
         </div>
       </div>
+
+      <fieldset className="card p-5">
+        <legend className="eyebrow px-1">{t("shelfExtras")}</legend>
+        <label className="mt-3 flex items-center gap-3 text-xs">
+          <Checkbox name="pinned" defaultChecked={book?.pinned ?? false} />
+          {t("pinToTop")}
+        </label>
+
+        <div className="mt-5">
+          <Label htmlFor="bannerText">{t("bannerText")}</Label>
+          <Input
+            id="bannerText"
+            name="bannerText"
+            value={bannerText}
+            maxLength={BANNER_MAX_LENGTH}
+            placeholder={t("bannerPlaceholder")}
+            autoComplete="off"
+            onChange={(event) => setBannerText(event.target.value)}
+          />
+          <p className="mt-2 text-[11px] leading-relaxed text-muted">{t("bannerHint")}</p>
+        </div>
+
+        <div className="mt-4">
+          <p className="eyebrow mb-2">{t("bannerColor")}</p>
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(BANNER_COLORS) as BannerColor[]).map((color) => (
+              <label key={color} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="bannerColor"
+                  value={color}
+                  checked={bannerColor === color}
+                  onChange={() => setBannerColor(color)}
+                  className="peer sr-only"
+                />
+                <span
+                  className={cn(
+                    "block h-9 w-9 rounded-full ring-offset-2 ring-offset-surface peer-checked:ring-2 peer-checked:ring-accent peer-focus-visible:ring-2",
+                    bannerClass(color),
+                  )}
+                />
+                <span className="sr-only">{color}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {bannerText.trim() && (
+          <div className="mt-5 w-32">
+            <div className="relative aspect-square overflow-hidden rounded-[10px] border border-border bg-surface-high">
+              <span
+                className={cn(
+                  "absolute inset-x-0 bottom-0 line-clamp-2 px-1.5 py-1 text-center text-[9px] leading-tight font-semibold tracking-wide uppercase",
+                  bannerClass(bannerColor),
+                )}
+              >
+                {bannerText}
+              </span>
+            </div>
+          </div>
+        )}
+      </fieldset>
 
       <fieldset className="card p-5">
         <legend className="eyebrow px-1">{t("showOnListing")}</legend>
