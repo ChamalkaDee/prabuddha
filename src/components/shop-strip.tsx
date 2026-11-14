@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 /** Where members collect and return books. Change it here and the strip follows. */
 export const SHOP = {
-  lines: ["CEYLON MARKET", "VIA GASPARE DEL CARRETTO 19B", "VERONA 37136", "ITALY"],
+  lines: ["Ceylon Market", "Via Gaspare del Carretto 19B", "37136 Verona", "Italy"],
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=" +
     encodeURIComponent("Ceylon Market, Via Gaspare del Carretto 19B, 37136 Verona, Italy"),
@@ -19,60 +19,81 @@ function WhatsAppIcon({ size = 16 }: { size?: number }) {
   );
 }
 
+function MapPinIcon({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+const pill =
+  "inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border border-border bg-background/60 px-4 text-xs text-accent transition-colors hover:border-accent/50 hover:bg-accent-soft";
+
 /**
- * The shop's address scrolling right to left under the header, with a
- * WhatsApp button that stays still so it is easy to tap on a phone.
- * The text is rendered twice and slid by half its width, so the loop
- * never shows a gap.
+ * Where to collect and return books, under the header: the address as a
+ * link to Google Maps, plus Maps and WhatsApp buttons.
  */
 export async function ShopStrip() {
   const t = await getTranslations("shop");
-
-  const run = (
-    <span className="flex shrink-0 items-center gap-6 pr-6">
-      <span className="font-medium text-accent">{t("label")}</span>
-      <span aria-hidden="true" className="text-gold">✦</span>
-      {SHOP.lines.map((line) => (
-        <span key={line} className="flex items-center gap-6">
-          <span>{line}</span>
-          <span aria-hidden="true" className="text-gold">·</span>
-        </span>
-      ))}
-      <span className="flex items-center gap-1.5 font-mono">
-        <WhatsAppIcon size={13} />
-        {SHOP.phone}
-      </span>
-      <span aria-hidden="true" className="text-gold">✦</span>
-    </span>
-  );
+  const [name, ...rest] = SHOP.lines;
 
   return (
     <div className="border-b border-border/60 bg-surface">
-      <div className="mx-auto flex w-full max-w-3xl items-center gap-2 py-1.5 pl-5 pr-3 sm:px-8">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <a
           href={SHOP.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`${t("label")}: ${SHOP.lines.join(", ")}`}
-          className="group relative min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-16px),transparent)] motion-reduce:overflow-x-auto"
+          className="group flex min-w-0 items-start gap-3"
         >
-          <span className="flex w-max animate-marquee text-[11px] leading-6 tracking-wide whitespace-nowrap text-foreground/80 group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-            {run}
-            <span aria-hidden="true" className="flex motion-reduce:hidden">
-              {run}
+          <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+            <MapPinIcon />
+          </span>
+          <span className="min-w-0">
+            <span className="eyebrow block">{t("label")}</span>
+            <span className="mt-1 block text-xs leading-relaxed text-foreground/85 transition-colors group-hover:text-accent">
+              <span className="font-display text-[13px] font-semibold text-foreground group-hover:text-accent">
+                {name}
+              </span>
+              <span aria-hidden="true" className="mx-1.5 text-gold">
+                ·
+              </span>
+              {rest.join(", ")}
             </span>
           </span>
         </a>
-        <a
-          href={SHOP.whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={t("whatsappLabel", { phone: SHOP.phone })}
-          className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full bg-[#1f8f4e] px-3.5 text-xs font-medium text-white shadow-sm transition-all hover:brightness-110 active:scale-95"
-        >
-          <WhatsAppIcon />
-          {t("whatsapp")}
-        </a>
+
+        <div className="flex gap-2 pl-11 sm:pl-0">
+          <a
+            href={SHOP.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={pill}
+          >
+            <MapPinIcon size={14} />
+            {t("openMaps")}
+          </a>
+          <a
+            href={SHOP.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t("whatsappLabel", { phone: SHOP.phone })}
+            className={pill}
+          >
+            <span className="text-[#1f8f4e]">
+              <WhatsAppIcon size={15} />
+            </span>
+            <span className="font-mono text-[11px]">{SHOP.phone}</span>
+          </a>
+        </div>
       </div>
     </div>
   );

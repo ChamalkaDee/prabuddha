@@ -224,7 +224,7 @@
   },
   "shop": {
     "label": "පොත් ලබාගැනීම සහ ආපසු බාරදීම",
-    "whatsapp": "WhatsApp",
-    "whatsappLabel": "{phone} අංකයට WhatsApp මඟින් අමතන්න"
+    "whatsappLabel": "{phone} අංකයට WhatsApp මඟින් අමතන්න",
+    "openMaps": "සිතියම"
   }
 }

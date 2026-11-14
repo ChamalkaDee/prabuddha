@@ -34,16 +34,6 @@
   --radius-card: 18px;
   --radius-sheet: 24px;
   --radius-thumb: 10px;
-
-  --animate-marquee: marquee 32s linear infinite;
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
 }
 
 :root {

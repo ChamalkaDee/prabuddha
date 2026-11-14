@@ -224,7 +224,7 @@
   },
   "shop": {
     "label": "Collect & return books at",
-    "whatsapp": "WhatsApp",
-    "whatsappLabel": "Call or message {phone} on WhatsApp"
+    "whatsappLabel": "Call or message {phone} on WhatsApp",
+    "openMaps": "Maps"
   }
 }

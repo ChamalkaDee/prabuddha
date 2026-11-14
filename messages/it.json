@@ -224,7 +224,7 @@
   },
   "shop": {
     "label": "Ritiro e restituzione dei libri",
-    "whatsapp": "WhatsApp",
-    "whatsappLabel": "Chiama o scrivi al {phone} su WhatsApp"
+    "whatsappLabel": "Chiama o scrivi al {phone} su WhatsApp",
+    "openMaps": "Mappa"
   }
 }
