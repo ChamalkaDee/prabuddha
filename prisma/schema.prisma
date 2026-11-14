@@ -140,6 +140,7 @@ model Book {
   images       BookImage[]
   loans        Loan[]
   translations BookTranslation[]
+  categories   BookCategory[]
 
   @@index([visible])
   @@index([pinned])
@@ -161,6 +162,35 @@ model BookTranslation {
 
   @@unique([bookId, locale])
   @@index([bookId])
+}
+
+/// A shelf section readers filter by, e.g. Buddhism or World fiction.
+/// Names are stored per language because there are only ever a handful.
+model Category {
+  id       String @id @default(cuid())
+  /// Stable key used in the shelf URL, e.g. ?cat=buddhism
+  slug     String @unique
+  nameSi   String
+  nameEn   String
+  nameIt   String
+  /// Lower numbers come first in the shelf filter.
+  position Int    @default(0)
+
+  createdAt DateTime @default(now())
+
+  books BookCategory[]
+}
+
+/// A book can sit in several categories.
+model BookCategory {
+  bookId     String
+  categoryId String
+
+  book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([bookId, categoryId])
+  @@index([categoryId])
 }
 
 model BookImage {

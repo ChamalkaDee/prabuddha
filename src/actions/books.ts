@@ -97,6 +97,10 @@ async function saveBook(
   const bannerColor =
     bannerColorRaw && bannerColorRaw in BANNER_COLORS ? bannerColorRaw : DEFAULT_BANNER_COLOR;
 
+  const categoryIds = [
+    ...new Set(formData.getAll("category").map((v) => String(v)).filter(Boolean)),
+  ];
+
   // Checked before uploading so a clash does not leave orphaned photos.
   try {
     if (bookId) {
@@ -191,6 +195,13 @@ async function saveBook(
             })),
           },
           images: { deleteMany: {}, create: images },
+          categories: {
+            deleteMany: { categoryId: { notIn: categoryIds } },
+            connectOrCreate: categoryIds.map((categoryId) => ({
+              where: { bookId_categoryId: { bookId, categoryId } },
+              create: { categoryId },
+            })),
+          },
         },
       });
     } else {
@@ -200,6 +211,7 @@ async function saveBook(
           language: str(formData, "language") ?? "si",
           translations: { create: translations },
           images: { create: images },
+          categories: { create: categoryIds.map((categoryId) => ({ categoryId })) },
         },
       });
     }

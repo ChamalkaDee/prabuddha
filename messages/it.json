@@ -17,12 +17,14 @@
     "eyebrow": "Lo scaffale oggi",
     "heading": "{count, plural, =0 {Nessun libro sullo scaffale.} =1 {Un libro in attesa di essere letto.} other {# libri in attesa di essere letti.}}",
     "intro": "Chiunque può sfogliare il catalogo. I soci ritirano e restituiscono di persona in negozio — due libri alla volta, due settimane ciascuno.",
-    "search": "Cerca nel catalogo",
     "filterAll": "Tutti",
     "filterAvailable": "Disponibili",
     "emptyTitle": "Ancora niente qui",
-    "emptySearch": "Nessun libro corrisponde. Prova con il cognome dell'autore.",
-    "emptyAdmin": "Un amministratore aggiunge i primi libri dalla schermata inventario."
+    "emptyAdmin": "Un amministratore aggiunge i primi libri dalla schermata inventario.",
+    "onShelfLabel": "Libri disponibili",
+    "ofTotal": "su {total}",
+    "categoriesLabel": "Categorie",
+    "emptyCategory": "Nessun libro qui al momento. Prova un'altra categoria."
   },
   "book": {
     "onShelf": "Sullo scaffale",
@@ -157,7 +159,17 @@
     "bannerText": "Banner (facoltativo)",
     "bannerPlaceholder": "Gratis per tutti",
     "bannerHint": "Appare come un nastro evidenziato sulla copertina. Lascia vuoto per nessun banner.",
-    "bannerColor": "Colore del banner"
+    "bannerColor": "Colore del banner",
+    "tabCategories": "Categorie",
+    "categories": "Categorie",
+    "noCategoriesYet": "Nessuna categoria. Aggiungile dalla scheda Categorie.",
+    "noCategory": "Nessuna categoria",
+    "addCategory": "Aggiungi una categoria",
+    "categoriesHint": "I lettori le scelgono sullo scaffale. Dai un nome in più lingue possibile; quelle mancanti usano l'inglese.",
+    "categoriesCount": "{count, plural, =1 {1 categoria} other {# categorie}}",
+    "booksInCategory": "{count, plural, =0 {nessun libro} =1 {1 libro} other {# libri}}",
+    "deleteCategoryConfirm": "Eliminare questa categoria? I libri restano; perdono solo questa etichetta.",
+    "saved": "Salvato."
   },
   "email": {
     "confirmSubject": "Prenotato: {title}",
@@ -200,7 +212,8 @@
     "photosStillPreparing": "Le foto sono ancora in preparazione. Attendi un momento, poi premi Salva.",
     "connectionLost": "Impossibile raggiungere il server. Controlla il Wi-Fi o la rete mobile, poi premi di nuovo Salva. I tuoi dati sono ancora qui.",
     "copiesInvalid": "Il numero di copie deve essere un intero da 1 a 999.",
-    "alreadyHaveCopy": "Hai già una copia di questo libro."
+    "alreadyHaveCopy": "Hai già una copia di questo libro.",
+    "categoryNameMissing": "Inserisci un nome in singalese o in inglese."
   },
   "errorPage": {
     "title": "Qualcosa è andato storto in questa pagina",

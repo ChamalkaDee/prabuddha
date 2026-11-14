@@ -17,12 +17,14 @@
     "eyebrow": "The shelf today",
     "heading": "{count, plural, =0 {No books on the shelf yet.} =1 {One book waiting to be read.} other {# books waiting to be read.}}",
     "intro": "Anyone can browse. Members collect and return in person at the shop — two books at a time, two weeks each.",
-    "search": "Search the catalogue",
     "filterAll": "All",
     "filterAvailable": "On shelf",
     "emptyTitle": "Nothing here yet",
-    "emptySearch": "No book matches that search. Try the author's surname.",
-    "emptyAdmin": "An admin adds the first books from the inventory screen."
+    "emptyAdmin": "An admin adds the first books from the inventory screen.",
+    "onShelfLabel": "Books on the shelf",
+    "ofTotal": "of {total}",
+    "categoriesLabel": "Categories",
+    "emptyCategory": "No books here right now. Try another category."
   },
   "book": {
     "onShelf": "On shelf",
@@ -157,7 +159,17 @@
     "bannerText": "Banner (optional)",
     "bannerPlaceholder": "Free for anyone",
     "bannerHint": "Shown as a highlighted ribbon across the cover. Leave empty for no banner.",
-    "bannerColor": "Banner colour"
+    "bannerColor": "Banner colour",
+    "tabCategories": "Categories",
+    "categories": "Categories",
+    "noCategoriesYet": "No categories yet. Add them from the Categories tab.",
+    "noCategory": "No category",
+    "addCategory": "Add a category",
+    "categoriesHint": "Readers pick these on the shelf. Give each a name in as many languages as you can; missing ones fall back to English.",
+    "categoriesCount": "{count, plural, =1 {1 category} other {# categories}}",
+    "booksInCategory": "{count, plural, =0 {no books} =1 {1 book} other {# books}}",
+    "deleteCategoryConfirm": "Delete this category? The books stay; they just lose this tag.",
+    "saved": "Saved."
   },
   "email": {
     "confirmSubject": "Reserved: {title}",
@@ -200,7 +212,8 @@
     "photosStillPreparing": "Photos are still being prepared. Wait a moment, then press Save.",
     "connectionLost": "Could not reach the server. Check the Wi-Fi or mobile signal, then press Save again. Your entries are still here.",
     "copiesInvalid": "Number of copies must be a whole number from 1 to 999.",
-    "alreadyHaveCopy": "You already have a copy of this book."
+    "alreadyHaveCopy": "You already have a copy of this book.",
+    "categoryNameMissing": "Enter a name in Sinhala or English."
   },
   "errorPage": {
     "title": "Something went wrong on this page",

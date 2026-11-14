@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { BookRowActions } from "@/components/admin-actions";
 import { pickTranslation } from "@/lib/book-i18n";
+import { categoryName } from "@/lib/category";
 import { locales, type Locale } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -27,6 +28,10 @@ export default async function InventoryPage({
     include: {
       translations: true,
       loans: { where: { status: "ACTIVE" }, select: { id: true } },
+      categories: {
+        select: { category: true },
+        orderBy: { category: { position: "asc" } },
+      },
       _count: { select: { loans: true } },
     },
   });
@@ -60,6 +65,11 @@ export default async function InventoryPage({
                     book.shelfMark}
                 </p>
                 <p className="truncate text-xs text-muted">{book.author}</p>
+                <p className="mt-1 text-[11px] text-accent">
+                  {book.categories.length > 0
+                    ? book.categories.map(({ category }) => categoryName(category, locale)).join(" · ")
+                    : t("noCategory")}
+                </p>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <Badge tone={allOut ? "onloan" : "available"}>

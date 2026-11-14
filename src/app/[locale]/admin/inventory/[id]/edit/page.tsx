@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
 import { BookForm, type BookFormValues } from "@/components/book-form";
+import { categoryName } from "@/lib/category";
 import { locales, type Locale } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -15,15 +16,17 @@ export default async function EditBookPage({
   const { locale: rawLocale, id } = await params;
   setRequestLocale(rawLocale as Locale);
 
-  const [t, book] = await Promise.all([
+  const [t, book, categories] = await Promise.all([
     getTranslations("admin"),
     prisma.book.findUnique({
       where: { id },
       include: {
         translations: true,
         images: { orderBy: { position: "asc" } },
+        categories: { select: { categoryId: true } },
       },
     }),
+    prisma.category.findMany({ orderBy: [{ position: "asc" }, { nameEn: "asc" }] }),
   ]);
   if (!book) notFound();
 
@@ -40,6 +43,7 @@ export default async function EditBookPage({
     copies: book.copies,
     bannerText: book.bannerText,
     bannerColor: book.bannerColor,
+    categoryIds: book.categories.map((c) => c.categoryId),
     imageUrls: book.images.map((image) => image.url),
     translations: Object.fromEntries(
       book.translations
@@ -58,7 +62,10 @@ export default async function EditBookPage({
       </Link>
       <h2 className="mt-3 font-display text-2xl font-semibold">{t("editBook")}</h2>
       <p className="mt-1 text-xs text-muted">{book.shelfMark}</p>
-      <BookForm book={values} />
+      <BookForm
+        book={values}
+        categories={categories.map((c) => ({ id: c.id, name: categoryName(c, rawLocale) }))}
+      />
     </div>
   );
 }

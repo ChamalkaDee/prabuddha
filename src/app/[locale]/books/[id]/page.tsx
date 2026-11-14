@@ -9,6 +9,7 @@ import { BookCover } from "@/components/book-cover";
 import { BookBanner } from "@/components/book-banner";
 import { MAX_ACTIVE_LOANS } from "@/lib/loans";
 import { pickTranslation } from "@/lib/book-i18n";
+import { categoryName } from "@/lib/category";
 import type { Locale } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -33,6 +34,10 @@ export default async function BookPage({
       include: {
         translations: true,
         images: { orderBy: { position: "asc" } },
+        categories: {
+          select: { category: true },
+          orderBy: { category: { position: "asc" } },
+        },
         // Soonest back first: that date is the one to show when every copy is out.
         loans: {
           where: { status: "ACTIVE" },
@@ -131,6 +136,20 @@ export default async function BookPage({
           ) : null}
           {isFallback && text ? <Badge>{t("noTranslation")}</Badge> : null}
         </div>
+
+        {book.categories.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {book.categories.map(({ category }) => (
+              <Link
+                key={category.id}
+                href={{ pathname: "/", query: { cat: category.slug } }}
+                className="rounded-full bg-accent-soft px-3 py-1.5 text-[11px] leading-none text-accent transition-colors hover:bg-accent hover:text-accent-contrast"
+              >
+                {categoryName(category, locale)}
+              </Link>
+            ))}
+          </div>
+        )}
 
         {book.showDescription && text?.description ? (
           <p className="mt-6 text-sm leading-relaxed whitespace-pre-line text-foreground/85">

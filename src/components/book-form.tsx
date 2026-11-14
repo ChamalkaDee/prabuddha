@@ -33,6 +33,7 @@ export type BookFormValues = {
   copies: number;
   bannerText: string | null;
   bannerColor: string | null;
+  categoryIds: string[];
   imageUrls: string[];
   translations: Partial<
     Record<Locale, { title: string; description: string | null; authorBio: string | null }>
@@ -45,7 +46,13 @@ export type BookFormValues = {
  * as a message above the form with everything still filled in, instead of
  * a full-page error that throws the admin's typing away.
  */
-export function BookForm({ book }: { book?: BookFormValues }) {
+export function BookForm({
+  book,
+  categories,
+}: {
+  book?: BookFormValues;
+  categories: { id: string; name: string }[];
+}) {
   const t = useTranslations("admin");
   const e = useTranslations("errors");
   const locale = useLocale();
@@ -257,6 +264,30 @@ export function BookForm({ book }: { book?: BookFormValues }) {
           ))}
         </div>
       </div>
+
+      <fieldset className="card p-5">
+        <legend className="eyebrow px-1">{t("categories")}</legend>
+        {categories.length === 0 ? (
+          <p className="mt-3 text-xs text-muted">{t("noCategoriesYet")}</p>
+        ) : (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <label key={category.id} className="cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="category"
+                  value={category.id}
+                  defaultChecked={book?.categoryIds.includes(category.id)}
+                  className="peer sr-only"
+                />
+                <span className="inline-flex min-h-10 items-center rounded-full border border-border px-4 text-xs text-muted transition-colors peer-checked:border-accent peer-checked:bg-accent peer-checked:text-accent-contrast peer-focus-visible:ring-2 peer-focus-visible:ring-accent">
+                  {category.name}
+                </span>
+              </label>
+            ))}
+          </div>
+        )}
+      </fieldset>
 
       <fieldset className="card p-5">
         <legend className="eyebrow px-1">{t("shelfExtras")}</legend>
