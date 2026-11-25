@@ -11,8 +11,7 @@
     "admin": "පරිපාලනය",
     "signIn": "ඇතුල් වන්න",
     "signOut": "පිටවන්න",
-    "language": "භාෂාව",
-    "pdfs": "PDF පොත්"
+    "language": "භාෂාව"
   },
   "catalogue": {
     "eyebrow": "අද රාක්කයේ",
@@ -25,7 +24,8 @@
     "onShelfLabel": "රාක්කයේ පොත්",
     "ofTotal": "{total} න්",
     "categoriesLabel": "කාණ්ඩ",
-    "emptyCategory": "දැනට මෙහි පොත් නැත. වෙනත් කාණ්ඩයක් තෝරන්න."
+    "emptyCategory": "දැනට මෙහි පොත් නැත. වෙනත් කාණ්ඩයක් තෝරන්න.",
+    "pdfBooks": "PDF පොත්"
   },
   "book": {
     "onShelf": "රාක්කයේ ඇත",

@@ -6,13 +6,12 @@
   },
   "nav": {
     "shelf": "Scaffale",
-    "myLoans": "I miei prestiti",
+    "myLoans": "Prestiti",
     "account": "Account",
-    "admin": "Amministrazione",
+    "admin": "Admin",
     "signIn": "Accedi",
     "signOut": "Esci",
-    "language": "Lingua",
-    "pdfs": "PDF"
+    "language": "Lingua"
   },
   "catalogue": {
     "eyebrow": "Lo scaffale oggi",
@@ -25,7 +24,8 @@
     "onShelfLabel": "Libri disponibili",
     "ofTotal": "su {total}",
     "categoriesLabel": "Categorie",
-    "emptyCategory": "Nessun libro qui al momento. Prova un'altra categoria."
+    "emptyCategory": "Nessun libro qui al momento. Prova un'altra categoria.",
+    "pdfBooks": "Libri PDF"
   },
   "book": {
     "onShelf": "Sullo scaffale",

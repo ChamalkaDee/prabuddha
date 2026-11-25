@@ -12,7 +12,6 @@ export async function BottomNav() {
 
   const items = [
     { href: "/", label: t("shelf"), icon: ShelfIcon },
-    { href: "/pdfs", label: t("pdfs"), icon: PdfIcon },
     { href: "/my-loans", label: t("myLoans"), icon: LoansIcon },
     isAdmin(viewer)
       ? { href: "/admin", label: t("admin"), icon: AdminIcon }
@@ -21,21 +20,23 @@ export async function BottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 z-40 px-5"
+      className="fixed inset-x-0 z-40 px-4"
       style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 1rem)" }}
     >
-      <div className="mx-auto flex w-full max-w-lg items-center justify-around gap-1 rounded-full border border-border bg-surface/95 p-2 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-lg items-center justify-around gap-0.5 rounded-full border border-border bg-surface/95 p-1.5 backdrop-blur-xl">
         {items.map(({ href, label, icon: Icon }) => (
           <Link
             key={href}
             href={href}
-            className="flex min-h-14 flex-1 flex-col items-center justify-center gap-1 rounded-full px-1.5 py-1.5 text-muted transition-colors hover:text-accent"
+            title={label}
+            className="flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-full text-muted transition-colors hover:text-accent"
           >
             <Icon />
-            <span className="text-[12.5px] leading-tight">{label}</span>
+            {/* One line, always: a label that wraps knocks the icons out of line. */}
+            <span className="nav-label block max-w-full truncate text-[12px] leading-[1.35]">{label}</span>
           </Link>
         ))}
-        <div className="sm:hidden">
+        <div className="shrink-0 sm:hidden">
           <LanguageSwitcher compact />
         </div>
       </div>
@@ -56,14 +57,6 @@ function ShelfIcon() {
     <svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true">
       <path {...stroke} d="M4 19V6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v13" />
       <path {...stroke} d="M4 19h15M9 4v15M14 4v15" />
-    </svg>
-  );
-}
-function PdfIcon() {
-  return (
-    <svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true">
-      <path {...stroke} d="M7 3.5h7l4 4v13H7a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1Z" />
-      <path {...stroke} d="M14 3.5V8h4M9.5 13h6M9.5 16.5h4" />
     </svg>
   );
 }

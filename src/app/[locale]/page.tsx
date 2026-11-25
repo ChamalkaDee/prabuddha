@@ -134,6 +134,19 @@ export default async function CataloguePage({
         >
           {t("filterAll")}
         </Link>
+        <Link href="/pdfs" className={cn(chip, chipOff)}>
+          <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M7 3.5h7l4 4v13H7a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1ZM14 3.5V8h4M9.5 13h6M9.5 16.5h4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          {t("pdfBooks")}
+        </Link>
         {categories
           .filter((c) => counts.get(c.slug))
           .map((c) => (

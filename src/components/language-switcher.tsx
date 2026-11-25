@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { locales, localeNames, type Locale } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
 
 /** Short labels for the phone bottom bar, where full names do not fit. */
 const shortNames: Record<Locale, string> = { si: "සිං", en: "EN", it: "IT" };
@@ -15,7 +16,7 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const [pending, start] = useTransition();
 
   return (
-    <div className="flex items-center gap-1 rounded-full border border-border p-1">
+    <div className={cn("flex items-center rounded-full border border-border p-1", compact ? "gap-0.5" : "gap-1")}>
       {locales.map((code) => (
         <button
           key={code}
@@ -23,11 +24,13 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
           onClick={() => start(() => router.replace(pathname, { locale: code }))}
           aria-label={localeNames[code]}
           aria-current={code === locale ? "true" : undefined}
-          className={
+          className={cn(
+            "rounded-full py-2 text-[13px]",
+            compact ? "px-2" : "px-3",
             code === locale
-              ? "rounded-full bg-accent-soft px-3 py-2 text-[13px] text-accent"
-              : "rounded-full px-3 py-2 text-[13px] text-muted transition-colors hover:text-foreground"
-          }
+              ? "bg-accent-soft text-accent"
+              : "text-muted transition-colors hover:text-foreground",
+          )}
         >
           {compact ? shortNames[code] : localeNames[code]}
         </button>

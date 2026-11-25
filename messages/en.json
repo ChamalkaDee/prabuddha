@@ -11,8 +11,7 @@
     "admin": "Admin",
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "language": "Language",
-    "pdfs": "PDFs"
+    "language": "Language"
   },
   "catalogue": {
     "eyebrow": "The shelf today",
@@ -25,7 +24,8 @@
     "onShelfLabel": "Books on the shelf",
     "ofTotal": "of {total}",
     "categoriesLabel": "Categories",
-    "emptyCategory": "No books here right now. Try another category."
+    "emptyCategory": "No books here right now. Try another category.",
+    "pdfBooks": "PDF books"
   },
   "book": {
     "onShelf": "On shelf",

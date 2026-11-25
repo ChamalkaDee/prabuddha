@@ -186,3 +186,9 @@
     opacity: 0.4;
   }
 }
+
+/* Bottom bar labels: Sinhala runs wider, so it gets a size that still fits one line. */
+:lang(si) .nav-label {
+  font-size: 10.5px;
+  line-height: 1.5;
+}
