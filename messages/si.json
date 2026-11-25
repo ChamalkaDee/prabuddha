@@ -25,7 +25,7 @@
     "ofTotal": "{total} න්",
     "categoriesLabel": "කාණ්ඩ",
     "emptyCategory": "දැනට මෙහි පොත් නැත. වෙනත් කාණ්ඩයක් තෝරන්න.",
-    "pdfBooks": "PDF පොත්"
+    "pdfBooks": "ඉ-පොත්"
   },
   "book": {
     "onShelf": "රාක්කයේ ඇත",
@@ -171,18 +171,18 @@
     "booksInCategory": "{count, plural, =0 {පොත් නැත} =1 {පොත් 1} other {පොත් #}}",
     "deleteCategoryConfirm": "මෙම කාණ්ඩය මකන්නද? පොත් ඉතිරි වේ; මෙම ටැගය පමණක් ඉවත් වේ.",
     "saved": "සුරැකිණි.",
-    "tabPdfs": "PDF",
-    "pdfAddTitle": "PDF පොතක් එක් කරන්න",
-    "pdfCount": "{count, plural, =1 {PDF 1} other {PDF #}}",
+    "tabPdfs": "ඉ-පොත්",
+    "pdfAddTitle": "ඉ-පොතක් එක් කරන්න",
+    "pdfCount": "{count, plural, =1 {ඉ-පොත් 1} other {ඉ-පොත් #}}",
     "pdfChoose": "PDF ගොනුවක් තෝරන්න",
     "pdfChooseAnother": "වෙනත් ගොනුවක් තෝරන්න",
     "pdfReading": "PDF කියවමින්…",
     "pdfPages": "{count, plural, =1 {පිටු 1} other {පිටු #}}",
     "pdfUpload": "PDF උඩුගත කරන්න",
     "pdfUploading": "උඩුගත කරමින්… {percent}%",
-    "pdfAdded": "එක් කළා. දැන් එය PDF පොත් පිටුවේ ඇත.",
+    "pdfAdded": "එක් කළා. දැන් එය ඉ-පොත් පිටුවේ ඇත.",
     "pdfHint": "MB {max} දක්වා. පළමු පිටුව කවරය වේ. ඕනෑම කෙනෙකුට පුරනය නොවී කියවීමට හා බාගත කිරීමට හැක.",
-    "pdfDeleteConfirm": "මෙම PDF මකන්නද? ගොනුව සියලු දෙනාටම ඉවත් වේ."
+    "pdfDeleteConfirm": "මෙම ඉ-පොත මකන්නද? ගොනුව සියලු දෙනාටම ඉවත් වේ."
   },
   "email": {
     "confirmSubject": "වෙන් කරන ලදී: {title}",
@@ -248,14 +248,14 @@
   },
   "pdfs": {
     "eyebrow": "නොමිලේ කියවන්න",
-    "title": "PDF පොත්",
+    "title": "ඉ-පොත්",
     "intro": "මාර්ගගතව කියවන්න හෝ බාගත කරගන්න. පුරනය වීම අවශ්‍ය නැත.",
-    "emptyTitle": "තවම PDF පොත් නැත",
+    "emptyTitle": "තවම ඉ-පොත් නැත",
     "emptyBody": "පරිපාලකයෙකු ඒවා පසු කාර්යාලයෙන් එක් කරයි.",
     "pages": "{count, plural, =1 {පිටු 1} other {පිටු #}}",
     "read": "කියවන්න",
     "download": "බාගත කරන්න",
-    "back": "PDF පොත් වෙත ආපසු",
+    "back": "ඉ-පොත් වෙත ආපසු",
     "readingMode": "කියවන ආකාරය",
     "modeScroll": "පහළට අනුචලනය",
     "modeSwipe": "වමට හා දකුණට ස්වයිප්",

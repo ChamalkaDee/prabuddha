@@ -4,7 +4,7 @@
 > locale prefix — `/si`, `/en`, `/it` — and a visitor with no prefix is sent
 > to `/si`.
 
-From zip file to `prabudda-books.vercel.app`. Follow it top to bottom; each step
+From zip file to `prabuddha-three.vercel.app`. Follow it top to bottom; each step
 assumes the one before it worked.
 
 Set aside about 90 minutes for the first run. Roughly half of that is waiting on
@@ -121,12 +121,12 @@ Replace `[YOUR-PASSWORD]` in both with the password from step 2.
    - **Authorised JavaScript origins** — add both:
      ```
      http://localhost:3000
-     https://prabudda-books.vercel.app
+     https://prabuddha-three.vercel.app
      ```
    - **Authorised redirect URIs** — add both:
      ```
      http://localhost:3000/api/auth/callback/google
-     https://prabudda-books.vercel.app/api/auth/callback/google
+     https://prabuddha-three.vercel.app/api/auth/callback/google
      ```
 9. Click **Create**. Copy the **Client ID** and **Client secret**.
 
@@ -268,11 +268,14 @@ rotate every secret before continuing.
 
 1. Go to <https://vercel.com/new>.
 2. Import the `prabuddha` repository.
-3. **Before clicking Deploy**, set the project name to **`prabudda-books`** —
-   this is what gives you `prabudda-books.vercel.app`.
+3. **Before clicking Deploy**, set the project name to **`prabuddha`**. Vercel
+   gave this project the address `prabuddha-three.vercel.app` (the name
+   `prabuddha.vercel.app` was already taken). Check yours under
+   **Settings → Domains** and use it wherever this guide says
+   `prabuddha-three.vercel.app`.
 4. Expand **Environment Variables** and add every line from your `.env` file,
    with two changes:
-   - `NEXTAUTH_URL` becomes `https://prabudda-books.vercel.app`
+   - `NEXTAUTH_URL` becomes `https://prabuddha-three.vercel.app`
    - everything else is copied across unchanged
 5. Click **Deploy** and wait two to three minutes.
 
@@ -299,7 +302,7 @@ future schema change.
 
 ## Step 11 — Final checks ✅
 
-Open <https://prabudda-books.vercel.app>.
+Open <https://prabuddha-three.vercel.app>.
 
 - [ ] The catalogue loads
 - [ ] Google sign-in works on the live domain
@@ -339,7 +342,7 @@ npx prisma migrate deploy
 
 **`redirect_uri_mismatch` on Google sign-in**
 The URI in Google Cloud does not exactly match. It must be
-`https://prabudda-books.vercel.app/api/auth/callback/google` — no trailing
+`https://prabuddha-three.vercel.app/api/auth/callback/google` — no trailing
 slash, `https` not `http`.
 
 **Sign-in emails never arrive**

@@ -8,7 +8,7 @@ const resend = process.env.AUTH_RESEND_KEY
 
 const FROM = process.env.EMAIL_FROM ?? "onboarding@resend.dev";
 const SHOP = process.env.SHOP_DETAILS ?? "the distributor shop";
-const SITE = process.env.NEXTAUTH_URL ?? "https://prabudda-books.vercel.app";
+const SITE = process.env.NEXTAUTH_URL ?? "https://prabuddha-three.vercel.app";
 
 function fmt(date: Date, locale: Locale) {
   return new Intl.DateTimeFormat(locale === "si" ? "si-LK" : locale, {

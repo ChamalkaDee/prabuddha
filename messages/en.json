@@ -25,7 +25,7 @@
     "ofTotal": "of {total}",
     "categoriesLabel": "Categories",
     "emptyCategory": "No books here right now. Try another category.",
-    "pdfBooks": "PDF books"
+    "pdfBooks": "E-books"
   },
   "book": {
     "onShelf": "On shelf",
@@ -171,18 +171,18 @@
     "booksInCategory": "{count, plural, =0 {no books} =1 {1 book} other {# books}}",
     "deleteCategoryConfirm": "Delete this category? The books stay; they just lose this tag.",
     "saved": "Saved.",
-    "tabPdfs": "PDFs",
-    "pdfAddTitle": "Add a PDF book",
-    "pdfCount": "{count, plural, =1 {1 PDF} other {# PDFs}}",
+    "tabPdfs": "E-books",
+    "pdfAddTitle": "Add an e-book",
+    "pdfCount": "{count, plural, =1 {1 e-book} other {# e-books}}",
     "pdfChoose": "Choose a PDF",
     "pdfChooseAnother": "Choose a different file",
     "pdfReading": "Reading the PDF…",
     "pdfPages": "{count, plural, =1 {1 page} other {# pages}}",
     "pdfUpload": "Upload PDF",
     "pdfUploading": "Uploading… {percent}%",
-    "pdfAdded": "Added. It is now on the PDF books page.",
+    "pdfAdded": "Added. It is now on the E-books page.",
     "pdfHint": "Up to {max} MB. The first page becomes the cover. Anyone can read and download it without signing in.",
-    "pdfDeleteConfirm": "Delete this PDF? The file is removed for everyone."
+    "pdfDeleteConfirm": "Delete this e-book? The file is removed for everyone."
   },
   "email": {
     "confirmSubject": "Reserved: {title}",
@@ -248,14 +248,14 @@
   },
   "pdfs": {
     "eyebrow": "Free to read",
-    "title": "PDF books",
+    "title": "E-books",
     "intro": "Read online or download. No sign-in needed.",
-    "emptyTitle": "No PDFs yet",
+    "emptyTitle": "No e-books yet",
     "emptyBody": "An admin adds them from the back office.",
     "pages": "{count, plural, =1 {1 page} other {# pages}}",
     "read": "Read",
     "download": "Download",
-    "back": "Back to PDF books",
+    "back": "Back to e-books",
     "readingMode": "Reading mode",
     "modeScroll": "Scroll down",
     "modeSwipe": "Swipe left and right",

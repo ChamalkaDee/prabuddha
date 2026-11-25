@@ -239,7 +239,7 @@ model Loan {
 }
 
 // ---------------------------------------------------------------------------
-// PDF books — free to read and download, no sign-in needed
+// E-books (PDFs) — free to read and download, no sign-in needed
 // ---------------------------------------------------------------------------
 
 /// A document anyone can read online or download. The file and its cover

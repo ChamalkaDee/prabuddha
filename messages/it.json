@@ -25,7 +25,7 @@
     "ofTotal": "su {total}",
     "categoriesLabel": "Categorie",
     "emptyCategory": "Nessun libro qui al momento. Prova un'altra categoria.",
-    "pdfBooks": "Libri PDF"
+    "pdfBooks": "E-book"
   },
   "book": {
     "onShelf": "Sullo scaffale",
@@ -171,18 +171,18 @@
     "booksInCategory": "{count, plural, =0 {nessun libro} =1 {1 libro} other {# libri}}",
     "deleteCategoryConfirm": "Eliminare questa categoria? I libri restano; perdono solo questa etichetta.",
     "saved": "Salvato.",
-    "tabPdfs": "PDF",
-    "pdfAddTitle": "Aggiungi un libro PDF",
-    "pdfCount": "{count, plural, =1 {1 PDF} other {# PDF}}",
+    "tabPdfs": "E-book",
+    "pdfAddTitle": "Aggiungi un e-book",
+    "pdfCount": "{count, plural, =1 {1 e-book} other {# e-book}}",
     "pdfChoose": "Scegli un PDF",
     "pdfChooseAnother": "Scegli un altro file",
     "pdfReading": "Lettura del PDF…",
     "pdfPages": "{count, plural, =1 {1 pagina} other {# pagine}}",
     "pdfUpload": "Carica PDF",
     "pdfUploading": "Caricamento… {percent}%",
-    "pdfAdded": "Aggiunto. Ora è nella pagina dei libri PDF.",
+    "pdfAdded": "Aggiunto. Ora è nella pagina degli e-book.",
     "pdfHint": "Fino a {max} MB. La prima pagina diventa la copertina. Chiunque può leggerlo e scaricarlo senza accedere.",
-    "pdfDeleteConfirm": "Eliminare questo PDF? Il file viene rimosso per tutti."
+    "pdfDeleteConfirm": "Eliminare questo e-book? Il file viene rimosso per tutti."
   },
   "email": {
     "confirmSubject": "Prenotato: {title}",
@@ -248,14 +248,14 @@
   },
   "pdfs": {
     "eyebrow": "Da leggere gratis",
-    "title": "Libri PDF",
+    "title": "E-book",
     "intro": "Leggi online o scarica. Non serve accedere.",
-    "emptyTitle": "Ancora nessun PDF",
+    "emptyTitle": "Ancora nessun e-book",
     "emptyBody": "Un amministratore li aggiunge dal back office.",
     "pages": "{count, plural, =1 {1 pagina} other {# pagine}}",
     "read": "Leggi",
     "download": "Scarica",
-    "back": "Torna ai libri PDF",
+    "back": "Torna agli e-book",
     "readingMode": "Modalità di lettura",
     "modeScroll": "Scorri in basso",
     "modeSwipe": "Scorri a destra e sinistra",
