@@ -11,7 +11,8 @@
     "admin": "Amministrazione",
     "signIn": "Accedi",
     "signOut": "Esci",
-    "language": "Lingua"
+    "language": "Lingua",
+    "pdfs": "PDF"
   },
   "catalogue": {
     "eyebrow": "Lo scaffale oggi",
@@ -169,7 +170,19 @@
     "categoriesCount": "{count, plural, =1 {1 categoria} other {# categorie}}",
     "booksInCategory": "{count, plural, =0 {nessun libro} =1 {1 libro} other {# libri}}",
     "deleteCategoryConfirm": "Eliminare questa categoria? I libri restano; perdono solo questa etichetta.",
-    "saved": "Salvato."
+    "saved": "Salvato.",
+    "tabPdfs": "PDF",
+    "pdfAddTitle": "Aggiungi un libro PDF",
+    "pdfCount": "{count, plural, =1 {1 PDF} other {# PDF}}",
+    "pdfChoose": "Scegli un PDF",
+    "pdfChooseAnother": "Scegli un altro file",
+    "pdfReading": "Lettura del PDF…",
+    "pdfPages": "{count, plural, =1 {1 pagina} other {# pagine}}",
+    "pdfUpload": "Carica PDF",
+    "pdfUploading": "Caricamento… {percent}%",
+    "pdfAdded": "Aggiunto. Ora è nella pagina dei libri PDF.",
+    "pdfHint": "Fino a {max} MB. La prima pagina diventa la copertina. Chiunque può leggerlo e scaricarlo senza accedere.",
+    "pdfDeleteConfirm": "Eliminare questo PDF? Il file viene rimosso per tutti."
   },
   "email": {
     "confirmSubject": "Prenotato: {title}",
@@ -213,7 +226,13 @@
     "connectionLost": "Impossibile raggiungere il server. Controlla il Wi-Fi o la rete mobile, poi premi di nuovo Salva. I tuoi dati sono ancora qui.",
     "copiesInvalid": "Il numero di copie deve essere un intero da 1 a 999.",
     "alreadyHaveCopy": "Hai già una copia di questo libro.",
-    "categoryNameMissing": "Inserisci un nome in singalese o in inglese."
+    "categoryNameMissing": "Inserisci un nome in singalese o in inglese.",
+    "pdfTooLarge": "Questo PDF supera i {max} MB. Prova con una copia compressa.",
+    "pdfNotPdf": "Questo file non è un PDF.",
+    "pdfTitleMissing": "Inserisci un titolo.",
+    "pdfNotUploaded": "Il caricamento del PDF non è terminato. Premi di nuovo Carica.",
+    "pdfStorageNotConfigured": "L'archivio file non è configurato sul server, quindi il PDF non è stato salvato. Avvisa il proprietario del sito.",
+    "pdfUploadFailed": "Impossibile caricare il PDF ({reason}). Premi di nuovo Carica."
   },
   "errorPage": {
     "title": "Qualcosa è andato storto in questa pagina",
@@ -226,5 +245,28 @@
     "label": "Ritiro e restituzione dei libri",
     "whatsappLabel": "Chiama o scrivi al {phone} su WhatsApp",
     "openMaps": "Mappa"
+  },
+  "pdfs": {
+    "eyebrow": "Da leggere gratis",
+    "title": "Libri PDF",
+    "intro": "Leggi online o scarica. Non serve accedere.",
+    "emptyTitle": "Ancora nessun PDF",
+    "emptyBody": "Un amministratore li aggiunge dal back office.",
+    "pages": "{count, plural, =1 {1 pagina} other {# pagine}}",
+    "read": "Leggi",
+    "download": "Scarica",
+    "back": "Torna ai libri PDF",
+    "readingMode": "Modalità di lettura",
+    "modeScroll": "Scorri in basso",
+    "modeSwipe": "Scorri a destra e sinistra",
+    "loading": "Apertura del PDF…",
+    "openFailed": "Non è stato possibile aprire questo PDF qui.",
+    "downloadInstead": "Scaricalo invece",
+    "previousPage": "Pagina precedente",
+    "nextPage": "Pagina successiva",
+    "pageNumber": "Numero di pagina",
+    "zoomIn": "Ingrandisci",
+    "zoomOut": "Riduci",
+    "fitWidth": "Adatta alla larghezza"
   }
 }

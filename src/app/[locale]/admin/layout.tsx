@@ -22,6 +22,7 @@ export default async function AdminLayout({
     { href: "/admin/members", label: t("tabMembers") },
     { href: "/admin/inventory", label: t("tabInventory") },
     { href: "/admin/categories", label: t("tabCategories") },
+    { href: "/admin/pdfs", label: t("tabPdfs") },
     { href: "/admin/loans", label: t("tabLoans") },
   ];
 

@@ -11,7 +11,8 @@
     "admin": "පරිපාලනය",
     "signIn": "ඇතුල් වන්න",
     "signOut": "පිටවන්න",
-    "language": "භාෂාව"
+    "language": "භාෂාව",
+    "pdfs": "PDF පොත්"
   },
   "catalogue": {
     "eyebrow": "අද රාක්කයේ",
@@ -169,7 +170,19 @@
     "categoriesCount": "කාණ්ඩ {count}",
     "booksInCategory": "{count, plural, =0 {පොත් නැත} =1 {පොත් 1} other {පොත් #}}",
     "deleteCategoryConfirm": "මෙම කාණ්ඩය මකන්නද? පොත් ඉතිරි වේ; මෙම ටැගය පමණක් ඉවත් වේ.",
-    "saved": "සුරැකිණි."
+    "saved": "සුරැකිණි.",
+    "tabPdfs": "PDF",
+    "pdfAddTitle": "PDF පොතක් එක් කරන්න",
+    "pdfCount": "{count, plural, =1 {PDF 1} other {PDF #}}",
+    "pdfChoose": "PDF ගොනුවක් තෝරන්න",
+    "pdfChooseAnother": "වෙනත් ගොනුවක් තෝරන්න",
+    "pdfReading": "PDF කියවමින්…",
+    "pdfPages": "{count, plural, =1 {පිටු 1} other {පිටු #}}",
+    "pdfUpload": "PDF උඩුගත කරන්න",
+    "pdfUploading": "උඩුගත කරමින්… {percent}%",
+    "pdfAdded": "එක් කළා. දැන් එය PDF පොත් පිටුවේ ඇත.",
+    "pdfHint": "MB {max} දක්වා. පළමු පිටුව කවරය වේ. ඕනෑම කෙනෙකුට පුරනය නොවී කියවීමට හා බාගත කිරීමට හැක.",
+    "pdfDeleteConfirm": "මෙම PDF මකන්නද? ගොනුව සියලු දෙනාටම ඉවත් වේ."
   },
   "email": {
     "confirmSubject": "වෙන් කරන ලදී: {title}",
@@ -213,7 +226,13 @@
     "connectionLost": "සේවාදායකයට සම්බන්ධ විය නොහැකි විය. Wi-Fi හෝ ජංගම සංඥාව පරීක්ෂා කර නැවත සුරකින්න ඔබන්න. ඔබ ඇතුළත් කළ දේ තවමත් මෙහි ඇත.",
     "copiesInvalid": "පිටපත් ගණන 1 සිට 999 දක්වා පූර්ණ සංඛ්‍යාවක් විය යුතුය.",
     "alreadyHaveCopy": "මෙම පොතේ පිටපතක් දැනටමත් ඔබ සතුව ඇත.",
-    "categoryNameMissing": "සිංහලෙන් හෝ ඉංග්‍රීසියෙන් නමක් ඇතුළත් කරන්න."
+    "categoryNameMissing": "සිංහලෙන් හෝ ඉංග්‍රීසියෙන් නමක් ඇතුළත් කරන්න.",
+    "pdfTooLarge": "එම PDF ගොනුව MB {max} ට වඩා විශාලයි. සම්පීඩිත පිටපතක් උත්සාහ කරන්න.",
+    "pdfNotPdf": "එම ගොනුව PDF එකක් නොවේ.",
+    "pdfTitleMissing": "මාතෘකාවක් ඇතුළත් කරන්න.",
+    "pdfNotUploaded": "PDF උඩුගත කිරීම අවසන් නොවීය. නැවත උඩුගත කරන්න ඔබන්න.",
+    "pdfStorageNotConfigured": "සේවාදායකයේ ගොනු ගබඩාව සකසා නැති නිසා PDF සුරැකුණේ නැත. වෙබ් අඩවි හිමිකරුට දන්වන්න.",
+    "pdfUploadFailed": "PDF උඩුගත කළ නොහැකි විය ({reason}). නැවත උඩුගත කරන්න ඔබන්න."
   },
   "errorPage": {
     "title": "මෙම පිටුවේ යම් දෝෂයක් ඇති විය",
@@ -226,5 +245,28 @@
     "label": "පොත් ලබාගැනීම සහ ආපසු බාරදීම",
     "whatsappLabel": "{phone} අංකයට WhatsApp මඟින් අමතන්න",
     "openMaps": "සිතියම"
+  },
+  "pdfs": {
+    "eyebrow": "නොමිලේ කියවන්න",
+    "title": "PDF පොත්",
+    "intro": "මාර්ගගතව කියවන්න හෝ බාගත කරගන්න. පුරනය වීම අවශ්‍ය නැත.",
+    "emptyTitle": "තවම PDF පොත් නැත",
+    "emptyBody": "පරිපාලකයෙකු ඒවා පසු කාර්යාලයෙන් එක් කරයි.",
+    "pages": "{count, plural, =1 {පිටු 1} other {පිටු #}}",
+    "read": "කියවන්න",
+    "download": "බාගත කරන්න",
+    "back": "PDF පොත් වෙත ආපසු",
+    "readingMode": "කියවන ආකාරය",
+    "modeScroll": "පහළට අනුචලනය",
+    "modeSwipe": "වමට හා දකුණට ස්වයිප්",
+    "loading": "PDF විවෘත කරමින්…",
+    "openFailed": "මෙම PDF මෙහි විවෘත කළ නොහැකි විය.",
+    "downloadInstead": "ඒ වෙනුවට බාගත කරන්න",
+    "previousPage": "පෙර පිටුව",
+    "nextPage": "ඊළඟ පිටුව",
+    "pageNumber": "පිටු අංකය",
+    "zoomIn": "විශාලනය",
+    "zoomOut": "කුඩා කරන්න",
+    "fitWidth": "පළලට ගළපන්න"
   }
 }

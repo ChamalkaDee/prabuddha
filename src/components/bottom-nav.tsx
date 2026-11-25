@@ -12,6 +12,7 @@ export async function BottomNav() {
 
   const items = [
     { href: "/", label: t("shelf"), icon: ShelfIcon },
+    { href: "/pdfs", label: t("pdfs"), icon: PdfIcon },
     { href: "/my-loans", label: t("myLoans"), icon: LoansIcon },
     isAdmin(viewer)
       ? { href: "/admin", label: t("admin"), icon: AdminIcon }
@@ -55,6 +56,14 @@ function ShelfIcon() {
     <svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true">
       <path {...stroke} d="M4 19V6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v13" />
       <path {...stroke} d="M4 19h15M9 4v15M14 4v15" />
+    </svg>
+  );
+}
+function PdfIcon() {
+  return (
+    <svg width="23" height="23" viewBox="0 0 24 24" aria-hidden="true">
+      <path {...stroke} d="M7 3.5h7l4 4v13H7a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1Z" />
+      <path {...stroke} d="M14 3.5V8h4M9.5 13h6M9.5 16.5h4" />
     </svg>
   );
 }

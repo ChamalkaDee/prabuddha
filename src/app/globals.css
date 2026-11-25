@@ -175,3 +175,14 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* PDF reader, swipe mode: each new page fades in as it is turned. */
+.pdf-page-in {
+  animation: pdf-page-in 180ms ease-out;
+}
+
+@keyframes pdf-page-in {
+  from {
+    opacity: 0.4;
+  }
+}

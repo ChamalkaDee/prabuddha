@@ -21,3 +21,14 @@ export function daysUntil(value: Date | string) {
   const now = Date.now();
   return Math.ceil((target - now) / 86_400_000);
 }
+
+/** "3.2 MB", "840 KB". */
+export function formatFileSize(bytes: number) {
+  if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+}
+
+/** Supabase serves a public file as an attachment, under this name, when asked. */
+export function downloadUrl(fileUrl: string, fileName: string) {
+  return `${fileUrl}?download=${encodeURIComponent(fileName)}`;
+}

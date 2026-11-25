@@ -237,3 +237,36 @@ model Loan {
   @@index([bookId, status])
   @@index([status, dueAt])
 }
+
+// ---------------------------------------------------------------------------
+// PDF books — free to read and download, no sign-in needed
+// ---------------------------------------------------------------------------
+
+/// A document anyone can read online or download. The file and its cover
+/// live in the `pdf-books` Supabase Storage bucket; the paths are kept so
+/// deleting the record can remove the files too.
+model PdfBook {
+  id          String  @id @default(cuid())
+  title       String
+  author      String?
+  description String?
+
+  fileUrl   String
+  filePath  String
+  /// Original file name, offered as the name of the downloaded file.
+  fileName  String
+  /// Size in bytes, shown next to the download button.
+  fileSize  Int
+  pageCount Int?
+
+  /// First page rendered as a JPEG in the browser at upload time.
+  coverUrl  String?
+  coverPath String?
+
+  visible Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([visible])
+}
